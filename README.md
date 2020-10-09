@@ -34,7 +34,7 @@ This project utilizes Trello for project management. You can visit this board by
 Please visit this link to view the [Software Requirements](./requirements.md)
 
 ## Installation
-First clone down a copy of the repository from here [Repo Link](https://github.com/trackChat/trackChat).
+First clone down a copy of the repository from: [Repo Link](https://github.com/trackChat/trackChat).
 
 ## Deployment
 
