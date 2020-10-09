@@ -15,7 +15,7 @@
   - [Software Requirements](#software-requirements)
   - [Installation](#installation)
   - [Deployment](#deployment)
-  - [UML Data Model](#uml-data-model)
+  - [Data Models](#uml-data-model)
   - [Wireframe](#wireframe)
   - [Approach to Testing](#approach-to-testing)
   - [License](#license)
@@ -38,8 +38,9 @@ First clone down a copy of the repository from: [Repo Link](https://github.com/t
 
 ## Deployment
 
-## UML Data Model
+## Data Models
 ![UML](./assets/uml.png)
+![ERD](./assets/erd.png)
 
 ## Wireframe
 ![Wireframe](./assets/wireframe.png)
