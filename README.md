@@ -23,12 +23,12 @@
 
 ### Overview
 
---project overview here--
+A simple and easy-to-use app which:
+* serves as a centralized view to locate and communicate with a group of people, in order to enable safe travel
 
 ## Project Management Board
 This project utilizes Trello for project management. You can visit this board by clicking the link below.
 [Workflow Board](https://trello.com/b/ghk1xrIa/401finalproject)
-
 
 ## Software Requirements
 Please visit this link to view the [Software Requirements](./requirements.md)
