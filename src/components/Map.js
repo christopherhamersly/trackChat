@@ -92,7 +92,7 @@ let pinColor = '#AB73A1';
 
 const styles = StyleSheet.create({
   container: {
-    height: height - 250,
+    height: height - 450,
     width: width,
   },
   map: {
