@@ -13,6 +13,7 @@ function SignUp() {
   useEffect(() => {
     register('username');
     register('phone');
+    register('email');
     register('password');
   }, [register])
 
@@ -24,9 +25,16 @@ function SignUp() {
         setValue('username', text);
       }} />
 
+      {/* should not already exist in database, should be 10 digit number */}
       <Text>Phone Number:</Text>
       <TextInput style={styles.input} onChangeText={text => {
         setValue('phone', text);
+      }} />
+
+      {/* alphanumeric characters & specific special characters allowed, separated by @, alpha, '.', alpha[2-3] */}
+      <Text>Email:</Text>
+      <TextInput style={styles.input} onChangeText={text => {
+        setValue('email', text);
       }} />
 
       <Text>Password:</Text>
@@ -41,9 +49,16 @@ function SignUp() {
   )
 }
 
+// const getRandomColor = () => {
+//   let hexcode = '#' + Math.random().toString(16).slice(2, 8);
+//   return hexcode;
+// }
+
+// let color = getRandomColor();
+
 const styles = StyleSheet.create({
   footer: {
-    height: 200,
+    height: 400,
     backgroundColor: '#f5f5f5',
     alignItems: 'center',
     justifyContent: 'center',
@@ -51,7 +66,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 25,
-    width: 200,
+    width: 80,
     backgroundColor: '#fff',
     borderWidth: 1,
     borderRadius: 4,
