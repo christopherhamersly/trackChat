@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import axios from 'axios';
 
 function SignUp() {
 
   const { control, handleSubmit, errors } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log('Form Data:', data);
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3000/signup',
+        data: data,
+      })
+      console.log('response:', response);
+    } catch (error) {
+      console.log('error trying to save to database', error);
+    }
+    // axios.post('https://localhost:3000/signup');
   }
 
   const onError = (errors) => {
@@ -47,7 +59,7 @@ function SignUp() {
           placeholder={'Digits Only Please'}
           />
         )}
-        name={'phone'}
+        name={'phoneNumber'}
         rules={{required: true, maxLength: 10, pattern: /[\d]{10}/g}}
         defaultValue=''
       />
