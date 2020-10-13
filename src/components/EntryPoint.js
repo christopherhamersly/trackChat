@@ -3,11 +3,19 @@ import { Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBar
 import * as Permissions from 'expo-permissions';
 import SignUp from './LoginView/SignUp.js';
 
+// function Footer() {
+
+//   return (
+//     <SignUp />
+//   )
+// }
+
 function Footer() {
-
   return (
-    <SignUp />
-  )
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>CURRENTLY ON "HOME"</Text>
+      <SignUp />
+    </View>
+  );
 }
-
 export default Footer;
