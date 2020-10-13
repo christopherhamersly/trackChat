@@ -22,7 +22,7 @@ const Map = () => {
   const [locationPermissions, setLocationPermissions] = useState(false);
   const [locationResult, setLocationResult] = useState("");
   const [currentLocations, setCurrentLocations] = useState({});
-
+  
   //key user: value: lat/lon
   const [everyonesPosition, setEveryonesPosition] = useState({});
 
@@ -39,7 +39,7 @@ const Map = () => {
   const grabLocation = (latitude, longitude) => {
     // console.log(user, 'user')
     socket.emit('locationBroadcast', { user: Math.random(), latitude, longitude })
-    // socket.emit('locationBroadcast', { user: 'fake', latitude: 122, longitude: 47 })
+    socket.emit('locationBroadcast', { user: 'fake', latitude: 47.61625, longitude: -122.3119 })
   }
 
   useEffect(() => {
@@ -58,36 +58,53 @@ const Map = () => {
   const addUsersToMap = (location) => {
     console.log('in add users to map', location.user)
 
-    let updatedMap = {
-      ...everyonesPosition,
-      [location.user]: {
-        latitude: location.latitude,
-        longitude: location.longitude
-      }
-    }
+    // const uniqueCategories = [...new Set(categories)]
+
+    // const newLocations = [...everyonesPosition];
+
+    
+
+    // let updatedMap = {
+    //   ...everyonesPosition,
+    //   [location.user]: {
+    //     latitude: location.latitude,
+    //     longitude: location.longitude
+    //   }
+    // }
 
     // let newObject = { ...everyonesPosition };
     // newObject[location.user] = {
     //   latitude: location.latitude,
     //   longitude: location.longitude
     // }
-    console.log('new object', updatedMap);
-    setEveryonesPosition(updatedMap);
-  }
-    // setEveryonesPosition({
-    //   ...everyonesPosition,
-    //   [location.user]: {
-    //     latitude: location.latitude,
-    //     longitude: location.longitude
-    //   },
-    // })
-    // console.log('added user to map: ', everyonesPosition)
-    // }
 
-    //adding a user, but is currently overwriting the last object. 
-    useEffect(() => {
-      console.log('every position in use effect', everyonesPosition);
-    }, [everyonesPosition])
+
+    // const onKeyDown = e => {
+    //   setKeyMap(prevKeyMap => ({ ...prevKeyMap, [e.keyCode]: true }));
+    // };
+    // console.log('new object', updatedMap);
+    setEveryonesPosition(oldObj => ({
+      ...oldObj,
+      [location.user]: {
+          latitude: location.latitude,
+          longitude: location.longitude
+      }
+    }));
+  }
+  // setEveryonesPosition({
+  //   ...everyonesPosition,
+  //   [location.user]: {
+  //     latitude: location.latitude,
+  //     longitude: location.longitude
+  //   },
+  // })
+  // console.log('added user to map: ', everyonesPosition)
+  // }
+
+  //adding a user, but is currently overwriting the last object. 
+  useEffect(() => {
+    console.log('every position in use effect', everyonesPosition);
+  }, [everyonesPosition])
 
   // const displayAllUsers = () => {
   //   grabLocation(location.coords.latitude, location.coords.longitude)
