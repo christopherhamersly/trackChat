@@ -10,13 +10,26 @@ function SignUp() {
   const onSubmit = async (data) => {
     console.log('Form Data:', data);
     if (data.email === '') { delete data.email }
+    console.log(data)
     try {
       const response = await axios({
         method: 'post',
         url: 'https://trackchat.herokuapp.com/signup',
         data: data,
       })
-      console.log('response:', response);
+      if (response.data === 'used name') {
+        console.log('used name, try another');
+      }
+      if (response.data === 'used email') {
+        console.log('used email, try another');
+      }
+      if (response.data === 'used phone number') {
+        console.log('used phone number, try another');
+      }
+      // console.log('response body:', response);
+      if (response.data === 'success') {
+        console.log('success! response:', response);
+      }
     } catch (error) {
       console.log('error trying to save to database', error);
     }
