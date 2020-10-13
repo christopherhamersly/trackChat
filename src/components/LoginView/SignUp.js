@@ -9,6 +9,7 @@ function SignUp() {
 
   const onSubmit = async (data) => {
     console.log('Form Data:', data);
+    if (data.email === '') { delete data.email }
     try {
       const response = await axios({
         method: 'post',
