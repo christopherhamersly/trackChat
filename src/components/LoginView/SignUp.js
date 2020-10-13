@@ -13,14 +13,13 @@ function SignUp() {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:3000/signup',
+        url: 'https://trackchat.herokuapp.com/signup',
         data: data,
       })
       console.log('response:', response);
     } catch (error) {
       console.log('error trying to save to database', error);
     }
-    // axios.post('https://localhost:3000/signup');
   }
 
   const onError = (errors) => {
@@ -35,15 +34,15 @@ function SignUp() {
         control={control}
         render={({ onChange, onBlur, value }) => (
           <TextInput
-          style={styles.input}
-          onBlur={onBlur}
-          onChangeText={ value => onChange(value) }
-          value={value}
-          placeholder={'Up to 20 characters'}
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+            placeholder={'Up to 20 characters'}
           />
         )}
         name={'username'}
-        rules={{required: true, maxLength: 20}}
+        rules={{ required: true, maxLength: 20 }}
         defaultValue=''
       />
       {errors.username && <Text style={styles.errors}>You'll need a username!</Text>}
@@ -53,15 +52,15 @@ function SignUp() {
         control={control}
         render={({ onChange, onBlur, value }) => (
           <TextInput
-          style={styles.input}
-          onBlur={onBlur}
-          onChangeText={ value => onChange(value) }
-          value={value}
-          placeholder={'Digits Only Please'}
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+            placeholder={'Digits Only Please'}
           />
         )}
         name={'phoneNumber'}
-        rules={{required: true, maxLength: 10, pattern: /[\d]{10}/g}}
+        rules={{ required: true, maxLength: 10, pattern: /[\d]{10}/g }}
         defaultValue=''
       />
       {errors.phone && <Text style={styles.errors}>Please enter 10 digit phone number with no spaces, parentheses, or dashes.</Text>}
@@ -71,15 +70,15 @@ function SignUp() {
         control={control}
         render={({ onChange, onBlur, value }) => (
           <TextInput
-          style={styles.input}
-          onBlur={onBlur}
-          onChangeText={ value => onChange(value) }
-          value={value}
-          placeholder={'Optional'}
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+            placeholder={'Optional'}
           />
         )}
         name={'email'}
-        rules={{required: false}}
+        rules={{ required: false }}
         defaultValue=''
       />
       {errors.email && <Text style={styles.errors}>Please enter a valid email address</Text>}
@@ -89,21 +88,21 @@ function SignUp() {
         control={control}
         render={({ onChange, onBlur, value }) => (
           <TextInput
-          style={styles.input}
-          onBlur={onBlur}
-          onChangeText={ value => onChange(value) }
-          value={value}
-          placeholder={'********'}
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={value => onChange(value)}
+            value={value}
+            placeholder={'********'}
           />
         )}
         name={'password'}
-        rules={{required: true, minLength: 6}}
+        rules={{ required: true, minLength: 6 }}
         defaultValue=''
       />
       {errors.password && <Text style={styles.errors}>Please enter a password that is at least 6 characters long.</Text>}
 
       <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={handleSubmit(onSubmit, onError)}>Sign Up</Text>
+        <Text style={styles.buttonText} onPress={handleSubmit(onSubmit, onError)}>Sign Up</Text>
       </TouchableOpacity>
     </View>
   )
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     width: 100,
     justifyContent: 'center'
-  }, 
+  },
   errors: {
     color: 'red',
     marginTop: 2,

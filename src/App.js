@@ -11,7 +11,7 @@ import Footer from './components/Footer.js';
 export default function App() {
   return (
     <>
-      <Map />
+      {/* <Map /> */}
       <Footer />
     </>
   );
