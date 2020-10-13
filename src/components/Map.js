@@ -13,11 +13,18 @@ import {
 } from "react-native";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
+import socketIO from 'socket.io-client';
+
+
+const socket = socketIO('https://trackchat.herokuapp.com')
 
 const Map = () => {
   const [locationPermissions, setLocationPermissions] = useState(false);
   const [locationResult, setLocationResult] = useState("");
-  const [currentLocation, setCurrentLocation] = useState({});
+  const [currentLocations, setCurrentLocations] = useState({});
+
+  //key user: value: lat/lon
+  const [everyonesPosition, setEveryonesPosition] = useState({});
 
   const grantLocationPermissions = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -25,47 +32,64 @@ const Map = () => {
       setCurrentLocation("Permission to access location was denied");
     } else {
       setLocationPermissions(true);
-      getCurrentPosition();
+      getStartingPosition();
     }
   };
 
+  const grabLocation = (latitude, longitude) => {
+    // console.log(user, 'user')
+    socket.emit('locationBroadcast', { user: 'users', latitude, longitude })
+  }
+
   useEffect(() => {
     grantLocationPermissions();
+
   }, []);
 
-  const getCurrentPosition = async () => {
-    console.log("------location test 1------");
+  useEffect(() => {
+    socket.on('location', location => {
+      // console.log('location of a user:', location);
+      // this is where we set everyones position
+      addUsersToMap(location);
+    })
+  }, [])
+
+  const addUsersToMap = (location) => {
+    console.log('in add users to map')
+    setEveryonesPosition({
+      user: {
+        latitude: location.latitude,
+        longitude: location.longitude
+      },
+    })
+    // console.log('added user to map: ', everyonesPosition)
+  }
+  
+  const displayAllUsers = () => {
+    grabLocation(location.coords.latitude, location.coords.longitude)
+    console.log('displayall', location.coords.latitude)
+    // one person signs in
+    // everyonesPosition[user] = {lat, lon} 
+
+  }
+
+
+
+  const getStartingPosition = async () => {
+    // console.log("------location test 1------");
     let location = await Location.getCurrentPositionAsync({});
-    console.log("------location test 2------");
+    // console.log("------location test 2------");
     setLocationResult({ locationResult: JSON.stringify(location) });
-    console.log(location.coords.latitude);
-    console.log(location.coords.longitude);
-    setCurrentLocation({
+    // console.log(location.coords.latitude);
+    // console.log(location.coords.longitude);
+    grabLocation(location.coords.latitude, location.coords.longitude);
+    setCurrentLocations({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
   };
-
-  // const watchLocation = () => {
-  //   let { coordinates } = currentLocation;
-
-  //   navigator.geolocation.watchPosition(
-  //     position => {
-  //       let { latitude, longitude } = position.coords;
-  //     }
-  //   )
-  // }
-
-  // useEffect(() => {
-  //   const requestLocationPermission = async () => {
-  //     if(Platform.OS === 'ios') {
-  //       getOneTimeLocation();
-  //       subscribeLocationLocation();
-  //     }
-  //   }
-  // })
 
   return (
     <>
@@ -79,24 +103,28 @@ const Map = () => {
             longitudeDelta: 0.0421,
           }}
         >
-          <Marker
+          {/* <Marker
             coordinate={{ latitude: 47.6062, longitude: -122.3321 }}
             pinColor={"#C2BBF0"}
             title={"initialRegion"}
-          />
-          <Marker.Animated
-            coordinate={{
-              latitude: currentLocation.latitude,
-              longitude: currentLocation.longitude,
-            }}
-            pinColor={pinColor}
-            title={"@username"}
-          />
+          /> */}
+
+          {Object.keys(everyonesPosition).map(user =>
+            <Marker.Animated
+              coordinate={{
+                latitude: everyonesPosition[user].latitude,
+                longitude: everyonesPosition[user].longitude
+              }}
+              key={user}
+              pinColor={pinColor}
+              title={user}
+            />
+          )}
         </MapView>
       </View>
       <View style={styles.coords}>
         <Text>
-          Location: {currentLocation.latitude}, {currentLocation.longitude}{" "}
+          Location: {currentLocations.latitude}, {currentLocations.longitude}{" "}
         </Text>
       </View>
     </>
