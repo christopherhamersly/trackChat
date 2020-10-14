@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import SearchUsers from "./SearchBar";
 
 const fakeDATA = [
   { name: "Cas", phone: "2061111111" },
@@ -37,14 +38,17 @@ const App = () => {
   const [selectedId, setSelectedId] = useState(null);
 
   const renderItem = ({ item }) => {
-    const backgroundColor = 'white'
+    const backgroundColor = "white";
 
     return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        style={{ backgroundColor }}
-      />
+      <>
+        <SearchUsers />
+        <Item
+          item={item}
+          onPress={() => setSelectedId(item.id)}
+          style={{ backgroundColor }}
+        />
+      </>
     );
   };
 
