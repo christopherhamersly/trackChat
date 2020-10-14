@@ -21,9 +21,9 @@ function Chat(props) {
 
   const onSubmit = (chat) => {
     // console.log('Username:', props.username)
-    // console.log('Chat:', chat);
+    console.log('Chat:', chat);
     socket.emit('chatBroadcast', {username:props.username, message: chat.chat})
-    // console.log('chat', chat)
+    console.log('chat', chat)
   }
 
   const handleSOS = (sos) => {
@@ -45,18 +45,18 @@ function Chat(props) {
   }
 
 
-  // useEffect(() => {
-  //   console.log('chats', chats)
-  // }, [chats])
+  useEffect(() => {
+    console.log('chats', chats)
+  }, [chats])
 
   useEffect(() => {
     socket.on('chat', chat => {
       // addChatToWindow(chat);
-      // console.log('chats from use effect',chats)
+      console.log('chats from use effect',chats)
       setChats((chats) => [...chats, chat])
 
     })
-  }, [chats]);
+  }, []);
 
 
 
