@@ -3,7 +3,7 @@ import React from 'react';
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import LogIn from './LogIn.js';
+import LogIn from './LogIn2.js';
 import SignUp from './SignUp.js';
 import Map from '../Map.js';
 import CreatGroup from '../CreatGroup';
