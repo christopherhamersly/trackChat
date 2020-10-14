@@ -3,7 +3,11 @@ import { Alert, Button, Dimensions, Form, Image, FlatList, Platform, StyleSheet,
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 
-function SignUp() {
+// REDUX
+import { connect } from 'react-redux';
+import { login, logout } from '../../store/login';
+
+function SignUp(props) {
 
   const { control, handleSubmit, errors } = useForm();
 
@@ -29,6 +33,10 @@ function SignUp() {
       // console.log('response body:', response);
       if (response.data === 'success') {
         console.log('success! response:', response);
+        
+        // REDUX
+        props.login(data.username);
+
       }
     } catch (error) {
       console.log('error trying to save to database', error);
@@ -117,6 +125,13 @@ function SignUp() {
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText} onPress={handleSubmit(onSubmit, onError)}>Sign Up</Text>
       </TouchableOpacity>
+
+      {/* REDUX */}
+        <Button
+        onPress={ () => props.logout()}
+        title={`Log Out ${props.username}`} />
+        <Text>{props.loggedIn ? 'Logged In' : 'Logged Out'}</Text>
+
     </View>
   )
 }
@@ -169,4 +184,16 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignUp;
+
+// REDUX
+const mapStateToProps = store => {
+  return {
+    loggedIn: store.logReducer.loggedIn,
+    username: store.logReducer.username
+  }
+}
+const mapDispatchToProps = { login, logout }
+
+
+// REDUX
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
