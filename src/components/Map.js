@@ -16,10 +16,11 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import socketIO from "socket.io-client";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { connect } from 'react-redux';
 
 const socket = socketIO("https://trackchat.herokuapp.com");
 
-const Map = () => {
+const Map = (props) => {
   const [locationPermissions, setLocationPermissions] = useState(false);
   const [locationResult, setLocationResult] = useState("");
   const [currentLocations, setCurrentLocations] = useState({});
@@ -39,7 +40,10 @@ const Map = () => {
 
   const grabLocation = (latitude, longitude) => {
     // console.log(user, 'user')
-    socket.emit("locationBroadcast", { user: "user", latitude, longitude });
+    //may be re rendering between cas and I due to the hard coded user below
+    socket.emit('locationBroadcast', {
+      user: props.loggedIn ? props.username : 'user',
+      latitude, longitude })
     // socket.emit('locationBroadcast', { user: 'fake', latitude: 47.61625, longitude: -122.3119 })
   };
 
@@ -48,11 +52,17 @@ const Map = () => {
   }, []);
 
   useEffect(() => {
-    socket.on("location", (location) => {
+    socket.emit('join', {username: props.username || 'user'})
+    socket.on('location', location => {
       // console.log('location of a user:', location);
       // this is where we set everyones position
       addUsersToMap(location);
-    });
+    })
+    // socket.on('userLeaves', user => {
+    //   let everyoneElse = currentLocations;
+    //   delete everyoneElse[user];
+    //   setEveryonesPosition(everyoneElse);
+    // })
   }, []);
 
   const addUsersToMap = (location) => {
@@ -96,13 +106,15 @@ const Map = () => {
   };
 
   return (
-    <>
+    !currentLocations.latitude
+    ? <Text>Loading</Text>
+    : <>
       <View style={styles.container}>
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 47.6062,
-            longitude: -122.3321,
+            latitude: currentLocations.latitude,
+            longitude: currentLocations.longitude,
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
@@ -164,7 +176,7 @@ function sosAlert() {
   )
 }
 
-function MapScreen() {
+function MapScreen(props) {
   return (
     <>
       <MaterialCommunityIcons
@@ -176,10 +188,20 @@ function MapScreen() {
       />
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>CURRENTLY ON "MAP SCREEN"</Text>
-        <Map />
+        <Map username={props.username} loggedIn={props.loggedIn} />
       </View>
     </>
   );
 }
 
-export default MapScreen;
+
+
+const mapStateToProps = store => {
+  return {
+    loggedIn: store.logReducer.loggedIn,
+    username: store.logReducer.username
+  }
+}
+
+
+export default connect(mapStateToProps)(MapScreen);
