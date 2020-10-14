@@ -32,14 +32,15 @@ function App() {
 
 
     <Provider store={store}>
-      <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Login" component={LoginNav} />
-          <Tab.Screen name="Map" component={MapScreen} />
-          <Tab.Screen name="Create Group" component={FlatListDemo} />
-          <Tab.Screen name="Chat Window" component={Chat} />
-        </Tab.Navigator>
-      </NavigationContainer>
+      {/* <NavigationContainer>
+        <Tab.Navigator> */}
+          {/* <Tab.Screen name="Login" component={LoginNav} /> */}
+          {/* <Tab.Screen name="Map" component={MapScreen} /> */}
+          {/* <Tab.Screen name="Create Group" component={FlatListDemo} />
+          <Tab.Screen name="Chat Window" component={Chat} /> */}
+          <LoginNav />
+        {/* </Tab.Navigator>
+      </NavigationContainer> */}
     </Provider>
   );
 }

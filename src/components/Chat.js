@@ -4,6 +4,7 @@ import * as Permissions from 'expo-permissions';
 import SignUp from './LoginView/SignUp.js';
 import { useForm, Controller } from 'react-hook-form';
 import socketIO from 'socket.io-client';
+// import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 const socket = socketIO('https://trackchat.herokuapp.com')
@@ -53,37 +54,61 @@ function Chat() {
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Here</Text>
-       <Text>Chat</Text>
+      <Text>Here</Text>
+      <Text>Chat</Text>
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
           <TextInput
-          style={styles.input}
-          onBlur={onBlur}
-          onChangeText={ value => onChange(value) }
-          value={value}
+            style={styles.input}
+            onBlur={onBlur}
+            onChangeText={(value) => onChange(value)}
+            value={value}
           />
         )}
-        name={'chat'}
-        defaultValue=''
+        name={"chat"}
+        defaultValue=""
       />
       <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={handleSubmit(onSubmit, onError)}>chat</Text>
+        <Text
+          style={styles.buttonText}
+          onPress={handleSubmit(onSubmit, onError)}
+        >
+          chat
+        </Text>
       </TouchableOpacity>
-      
       <TouchableOpacity style={styles.sosbutton}>
-          <Text style={styles.buttonText} onPress={handleSubmit(handleSOS, onError)}>S O S</Text>
+        <Text
+          style={styles.buttonText}
+          onPress={handleSubmit(handleSOS, onError)}
+        >
+          S O S
+        </Text>
       </TouchableOpacity>
-
       <TouchableOpacity style={styles.sosbutton}>
-          <Text style={styles.buttonText} onPress={handleSubmit(handleHelp, onError)}> HELP </Text>
+        <Text
+          style={styles.buttonText}
+          onPress={handleSubmit(handleHelp, onError)}
+        >
+          {" "}
+          HELP{" "}
+        </Text>
       </TouchableOpacity>
+      <MaterialCommunityIcons
+        name="bell-alert-outline"
+        size={50}
+        color="red"
+        style={styles.sos}
+        onPress={() => sosAlert()}
+      />{" "}
+      {/* <MaterialCommunityIcons
+        name="bell-alert-outline"
+        size={50}
+        color="red"
+        style={styles.sos}
+        onPress={() => sosAlert()}
+      /> */}
     </View>
-
-    
-    
-    
   );
 }
 
