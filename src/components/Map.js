@@ -38,8 +38,8 @@ const Map = () => {
 
   const grabLocation = (latitude, longitude) => {
     // console.log(user, 'user')
-    socket.emit('locationBroadcast', { user: Math.random(), latitude, longitude })
-    socket.emit('locationBroadcast', { user: 'fake', latitude: 47.61625, longitude: -122.3119 })
+    socket.emit('locationBroadcast', { user: 'user', latitude, longitude })
+    // socket.emit('locationBroadcast', { user: 'fake', latitude: 47.61625, longitude: -122.3119 })
   }
 
   useEffect(() => {
@@ -58,31 +58,6 @@ const Map = () => {
   const addUsersToMap = (location) => {
     console.log('in add users to map', location.user)
 
-    // const uniqueCategories = [...new Set(categories)]
-
-    // const newLocations = [...everyonesPosition];
-
-    
-
-    // let updatedMap = {
-    //   ...everyonesPosition,
-    //   [location.user]: {
-    //     latitude: location.latitude,
-    //     longitude: location.longitude
-    //   }
-    // }
-
-    // let newObject = { ...everyonesPosition };
-    // newObject[location.user] = {
-    //   latitude: location.latitude,
-    //   longitude: location.longitude
-    // }
-
-
-    // const onKeyDown = e => {
-    //   setKeyMap(prevKeyMap => ({ ...prevKeyMap, [e.keyCode]: true }));
-    // };
-    // console.log('new object', updatedMap);
     setEveryonesPosition(oldObj => ({
       ...oldObj,
       [location.user]: {
@@ -91,45 +66,37 @@ const Map = () => {
       }
     }));
   }
-  // setEveryonesPosition({
-  //   ...everyonesPosition,
-  //   [location.user]: {
-  //     latitude: location.latitude,
-  //     longitude: location.longitude
-  //   },
-  // })
-  // console.log('added user to map: ', everyonesPosition)
-  // }
 
-  //adding a user, but is currently overwriting the last object. 
+  const repeatingLocations = () => {
+
+    setInterval(async () => {
+
+      console.log('in interval')
+      let location = await Location.getCurrentPositionAsync({});
+      grabLocation(location.coords.latitude, location.coords.longitude);
+      
+    }, 3000);
+
+  }
+  
   useEffect(() => {
     console.log('every position in use effect', everyonesPosition);
   }, [everyonesPosition])
 
-  // const displayAllUsers = () => {
-  //   grabLocation(location.coords.latitude, location.coords.longitude)
-  //   console.log('displayall', location.coords.latitude)
-  //   // one person signs in
-  //   // everyonesPosition[user] = {lat, lon} 
-
-  // }
-
-
-
   const getStartingPosition = async () => {
-    // console.log("------location test 1------");
     let location = await Location.getCurrentPositionAsync({});
-    // console.log("------location test 2------");
-    setLocationResult({ locationResult: JSON.stringify(location) });
-    // console.log(location.coords.latitude);
-    // console.log(location.coords.longitude);
+
+    // setLocationResult({ locationResult: JSON.stringify(location) });
+
     grabLocation(location.coords.latitude, location.coords.longitude);
+
     setCurrentLocations({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
+    repeatingLocations();
   };
 
   return (
@@ -144,11 +111,6 @@ const Map = () => {
             longitudeDelta: 0.0421,
           }}
         >
-          {/* <Marker
-            coordinate={{ latitude: 47.6062, longitude: -122.3321 }}
-            pinColor={"#C2BBF0"}
-            title={"initialRegion"}
-          /> */}
 
           {Object.keys(everyonesPosition).map(user =>
             <Marker.Animated
@@ -161,6 +123,7 @@ const Map = () => {
               title={user}
             />
           )}
+
         </MapView>
       </View>
       <View style={styles.coords}>
@@ -174,8 +137,16 @@ const Map = () => {
 
 // STYLING
 
+// add color, add group members
+
+const getRandomColor = () => {
+  let hexcode = '#' + Math.random().toString(16).slice(2, 8);
+  return hexcode;
+}
+let pinColor = getRandomColor();
+
 let { height, width } = Dimensions.get("window");
-let pinColor = "#AB73A1";
+
 
 const styles = StyleSheet.create({
   container: {
