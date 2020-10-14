@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TouchableOpacity, View, TextInput } from 'react-native';
+import { Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import SignUp from './LoginView/SignUp.js';
 import { useForm, Controller } from 'react-hook-form';
 import socketIO from 'socket.io-client';
+import { connect } from 'react-redux';
 // import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 const socket = socketIO('https://trackchat.herokuapp.com')
 // const socket = socketIO('http://localhost:3000')
 
-function Chat() {
+function Chat(props) {
 
-  const [chats, setChats] = useState();
+  const [chats, setChats] = useState([]);
   const [sos, setSos] = useState();
   const [help, setHelp] = useState();
   
   const { control, handleSubmit, handleserrors } = useForm();
 
   const onSubmit = (chat) => {
-    console.log('Chat:', chat);
+    // console.log('Username:', props.username)
+    // console.log('Chat:', chat);
+    socket.emit('chatBroadcast', {username:props.username, message: chat.chat})
+    // console.log('chat', chat)
   }
 
   const handleSOS = (sos) => {
@@ -36,26 +40,54 @@ function Chat() {
   }
 
   const addChatToWindow = (chat) => {
-    console.log('chat', chat)
+    console.log('chat received', chat)
+    // setChats((chats) => [...chats, chat])
   }
 
+
+  // useEffect(() => {
+  //   console.log('chats', chats)
+  // }, [chats])
+
   useEffect(() => {
-    socket.on('chat', chats => {
-      addChatToWindow(chats);
+    socket.on('chat', chat => {
+      // addChatToWindow(chat);
+      // console.log('chats from use effect',chats)
+      setChats((chats) => [...chats, chat])
+
     })
-  }, []);
+  }, [chats]);
 
-
-  
-
-  
 
 
 
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>Here</Text>
-      <Text>Chat</Text>
+      {/* <FlatList> */}
+      <ScrollView>
+        {chats.map ((chat, i) =>   
+            <Text key={i}>  {chat.username} : {chat.message} </Text>
+        )
+      }
+      </ScrollView>
+        {/* </FlatList> */}
+      <TouchableOpacity style={styles.sosbutton}>
+        <Text
+          style={styles.buttonText}
+          onPress={handleSubmit(handleSOS, onError)}
+        >
+          S O S
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.sosbutton}>
+        <Text
+          style={styles.buttonText}
+          onPress={handleSubmit(handleHelp, onError)}
+        >
+          {" "}
+          HELP{" "}
+        </Text>
+      </TouchableOpacity>
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
@@ -77,30 +109,13 @@ function Chat() {
           chat
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.sosbutton}>
-        <Text
-          style={styles.buttonText}
-          onPress={handleSubmit(handleSOS, onError)}
-        >
-          S O S
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.sosbutton}>
-        <Text
-          style={styles.buttonText}
-          onPress={handleSubmit(handleHelp, onError)}
-        >
-          {" "}
-          HELP{" "}
-        </Text>
-      </TouchableOpacity>
-      <MaterialCommunityIcons
+      {/* <MaterialCommunityIcons
         name="bell-alert-outline"
         size={50}
         color="red"
         style={styles.sos}
         onPress={() => sosAlert()}
-      />{" "}
+      />{" "} */}
       {/* <MaterialCommunityIcons
         name="bell-alert-outline"
         size={50}
@@ -163,4 +178,12 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 });
-export default Chat;
+
+const mapStateToProps = store => {
+  return {
+    loggedIn: store.logReducer.loggedIn,
+    username: store.logReducer.username
+  }
+}
+
+export default connect(mapStateToProps)(Chat);
