@@ -12,7 +12,7 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { login, logout } from '../../store/login';
 
-function SignUp(props, {navigation}) {
+function SignUp(props /*, { navigation }*/) {
 
 
   const { control, handleSubmit, errors } = useForm();
@@ -40,11 +40,13 @@ function SignUp(props, {navigation}) {
       if (response.data === 'success') {
         console.log('success! response:', response);
 
-        // navigation.navigate('Map');
-
-        
+       
         // REDUX
         props.login(data.username);
+
+        props.navigation.navigate('Map');
+
+        
 
 
       }
@@ -146,7 +148,7 @@ function SignUp(props, {navigation}) {
 
       <Button
         title='Log In Instead.'
-        onPress={() => navigation.navigate('LogIn')}
+        onPress={() => props.navigation.navigate('LogIn')}
       />
 
       {/* REDUX */}

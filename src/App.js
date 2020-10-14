@@ -23,27 +23,39 @@ import FlatListDemo from './components/CreatGroup';
 
 import store from './store/index'
 
+import { connect } from "react-redux";
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 function App() {
   return (
-
-
     <Provider store={store}>
-      {/* <NavigationContainer>
-        <Tab.Navigator> */}
-          {/* <Tab.Screen name="Login" component={LoginNav} /> */}
-          {/* <Tab.Screen name="Map" component={MapScreen} /> */}
-          {/* <Tab.Screen name="Create Group" component={FlatListDemo} />
-          <Tab.Screen name="Chat Window" component={Chat} /> */}
-          <LoginNav />
-        {/* </Tab.Navigator>
-      </NavigationContainer> */}
+      <MainScreen />
     </Provider>
   );
+
 }
 
+function MainScreen(props) {
+
+  return (
+    !props.loggedIn
+      ? <LoginNav />
+      : <MapScreen />
+
+  )
+
+}
+
+const mapStateToProps = store => {
+  return {
+    loggedIn: store.logReducer.loggedIn,
+    username: store.logReducer.username
+  }
+}
+
+connect(mapStateToProps)(MainScreen);
 
 export default App;

@@ -78,7 +78,7 @@ const Map = (props) => {
   }, []);
 
   const addUsersToMap = (location) => {
-    console.log("in add users to map", location.user);
+    // console.log("in add users to map", location.user);
 
     setEveryonesPosition((oldObj) => ({
       ...oldObj,
@@ -91,7 +91,7 @@ const Map = (props) => {
 
   const repeatingLocations = () => {
     setInterval(async () => {
-      console.log("in interval");
+      // console.log("in interval");
       let location = await Location.getCurrentPositionAsync({});
       grabLocation(location.coords.latitude, location.coords.longitude);
     }, 3000);
@@ -124,28 +124,28 @@ const Map = (props) => {
         {isLoading ? (
           <Loading />
         ) : (
-          <MapView
-            style={styles.map}
-            initialRegion={{
-              latitude: currentLocations.latitude,
-              longitude: currentLocations.longitude,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          >
-            {Object.keys(everyonesPosition).map((user) => (
-              <Marker.Animated
-                coordinate={{
-                  latitude: everyonesPosition[user].latitude,
-                  longitude: everyonesPosition[user].longitude,
-                }}
-                key={user}
-                pinColor={pinColor}
-                title={user}
-              />
-            ))}
-          </MapView>
-        )}
+            <MapView
+              style={styles.map}
+              initialRegion={{
+                latitude: currentLocations.latitude,
+                longitude: currentLocations.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+            >
+              {Object.keys(everyonesPosition).map((user) => (
+                <Marker.Animated
+                  coordinate={{
+                    latitude: everyonesPosition[user].latitude,
+                    longitude: everyonesPosition[user].longitude,
+                  }}
+                  key={user}
+                  pinColor={pinColor}
+                  title={user}
+                />
+              ))}
+            </MapView>
+          )}
 
         {/* <NavigationContainer>
           <Tab.Navigator>
