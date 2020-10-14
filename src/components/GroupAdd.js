@@ -18,11 +18,6 @@ import {
   TouchableHighlight,
 } from "react-native";
 import { useForm } from "react-hook-form";
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from "react-native-simple-radio-button";
 
 const GroupAdd = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -101,7 +96,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GroupAdd;
+function AddGroupTab() {
+  return (
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+      <Text>CURRENTLY ON "CREATE GROUP"</Text>
+      <GroupAdd />
+    </View>
+  );
+}
+
+export default AddGroupTab;
 
 // add color, add group members
 
