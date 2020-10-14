@@ -8,9 +8,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import AddGroupTab from './components/GroupAdd.js';
-import MapScreen from './components/Map.js';
+// import AddGroupTab from './components/GroupAdd.js';
+// import MapScreen from './components/Map.js';
 import SignUp from './components/EntryPoint.js';
+import FlatListDemo from './components/TestRenderUsers'
 
 const Tab = createBottomTabNavigator();
 
@@ -19,8 +20,8 @@ function App() {
     <NavigationContainer>
       <Tab.Navigator>
         <Tab.Screen name="Login" component={SignUp} />
-        <Tab.Screen name="Map" component={MapScreen} />
-        <Tab.Screen name="Create Group" component={AddGroupTab} />
+        {/* <Tab.Screen name="Map" component={MapScreen} /> */}
+        <Tab.Screen name="Create Group" component={FlatListDemo} />
       </Tab.Navigator>
     </NavigationContainer>
   );
