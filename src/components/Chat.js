@@ -32,7 +32,7 @@ function Chat(props) {
 
   const handleSOS = (sos) => {
     console.log('SOS')
-    socket.emit('sosBroadcast')
+    socket.emit('sosBroadcast', {username:props.username, message: 'sos'})
   }
 
   const onError = (errors) => {
@@ -46,9 +46,11 @@ function Chat(props) {
 
 
   useEffect(() => {
-    console.log('chats', chats)
-  }, [chats])
-
+    socket.on('sos', alert => {
+      console.log( alert);
+    })
+    },[])
+  
   useEffect(() => {
     socket.on('chat', chat => {
       // addChatToWindow(chat);
