@@ -98,7 +98,7 @@ const Map = (props) => {
   };
 
   useEffect(() => {
-    console.log("every position in use effect", everyonesPosition);
+    // console.log("every position in use effect", everyonesPosition);
   }, [everyonesPosition]);
 
   const getStartingPosition = async () => {
