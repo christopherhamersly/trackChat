@@ -1,25 +1,40 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Alert, Button, Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import base64 from 'base-64'
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import axios from 'axios';
 
-function LogIn({navigation}) {
+import { connect } from 'react-redux';
+import { login, logout } from '../../store/login';
+
+
+function LogIn(props) {
 
   const { control, handleSubmit, errors } = useForm();
 
   const onSubmit = async (data) => {
     console.log('Form Data:', data);
+    
     try {
-      const response = await axios({
-        method: 'get',
-        url: 'https://trackchat.herokuapp.com/signin',
-        data: data,
-      })
-      if (response.data === {user: request.user}) {
+      const authHeader = 'Basic ' + base64.encode(`${data.username}:${data.password}`);
+      const response = await axios.post(
+        'https://trackchat.herokuapp.com/signin',
+        {},
+        {
+          headers: {
+            authorization: authHeader
+          }
+        }
+  
+      )
+        console.log(response)
+      if (response.status === 200) {
+        props.login(data.username);
+        props.navigation.navigate('Map')
         console.log('successfully logged in');
       }
     } catch (error) {
@@ -78,7 +93,7 @@ function LogIn({navigation}) {
 
       <Button
         title='Sign Up.'
-        onPress={() => navigation.navigate('SignUp')}
+        onPress={() => props.navigation.navigate('SignUp')}
       />
 
     </View>
@@ -140,4 +155,13 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LogIn;
+const mapStateToProps = store => {
+  return {
+    loggedIn: store.logReducer.loggedIn,
+    username: store.logReducer.username
+  }
+}
+const mapDispatchToProps = { login, logout }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 
 import MapScreen from './components/Map.js';
 import SignUp from './components/EntryPoint.js';
-import LogIn from './components/LoginView/LogIn.js';
+import LogIn from './components/LoginView/LogIn2.js';
 
 import LoginNav from './components/LoginView/LoginNav.js';
 
