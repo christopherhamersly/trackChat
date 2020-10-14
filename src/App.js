@@ -9,9 +9,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Provider } from 'react-redux';
 
+
 import MapScreen from './components/Map.js';
 import SignUp from './components/EntryPoint.js';
 import FlatListDemo from './components/CreatGroup';
+
 
 import store from './store/index'
 
