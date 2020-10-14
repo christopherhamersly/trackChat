@@ -7,16 +7,27 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Button,
+  Alert,
 } from "react-native";
 import SearchUsers from "./SearchBar";
-import fakeDATA from './FakeData';
+import fakeDATA from "./FakeData";
 
-const Item = ({ item, onPress, style }) => (
+const Add = () => {
+  Alert.alert("Added to Group");
+};
+const Delete = () => {
+  Alert.alert("Deleted to Group");
+};
+
+const Item = ({ item, style }) => (
   <View>
     <View key={fakeDATA.phone}>
-      <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+      <TouchableOpacity style={[styles.item, style]}>
         <Text style={styles.title}>{item.name}</Text>
         <Text style={styles.title}>{item.phone}</Text>
+        <Button title={"Add to Group"} onPress={Add} />
+        <Button title={"Delete to Group"} onPress={Delete} />
       </TouchableOpacity>
     </View>
   </View>

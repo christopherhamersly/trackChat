@@ -33,9 +33,6 @@ const GroupAdd = () => {
   return (
     <View style={styles.centerText}>
       <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
         }}
@@ -56,25 +53,10 @@ const GroupAdd = () => {
             <TouchableOpacity>
               <Text onPress={handleSubmit(onSubmit)}>Add Friend</Text>
             </TouchableOpacity>
-            <TouchableHighlight
-              onPress={() => {
-                setModalVisible(!modalVisible);
-              }}
-            >
               <Text style={styles.textStyle}>Finished Adding to Group</Text>
-            </TouchableHighlight>
           </View>
         </View>
       </Modal>
-
-      <TouchableHighlight
-        style={styles.openButton}
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <Text style={styles.textStyle}>Create Group</Text>
-      </TouchableHighlight>
     </View>
   );
 };
@@ -105,7 +87,7 @@ function AddGroupTab() {
   );
 }
 
-export default AddGroupTab;
+export default GroupAdd;
 
 // add color, add group members
 
