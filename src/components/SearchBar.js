@@ -1,17 +1,29 @@
 import * as React from "react";
+import { Text, View } from "react-native";
 import { Searchbar } from "react-native-paper";
+import fakeDATA from "./FakeData";
 
 function SearchUsers() {
-  const [searchQuery, setSearchQuery] = React.useState("");
+    
+  const [searchUsers, setSearchUsers] = React.useState("");
 
-  const onChangeSearch = (query) => setSearchQuery(query);
+  function onChangeSearch(query) {
+    const enteredText = setSearchUsers(query);
+
+  }
 
   return (
-    <Searchbar
-      placeholder="Search"
-      onChangeText={onChangeSearch}
-      value={searchQuery}
-    />
+    <>
+      <Searchbar
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchUsers}
+      />
+      <View>
+        <Text>{searchUsers}</Text>
+        <Text>{JSON.stringify(fakeDATA)} === FAKE DATA</Text>
+      </View>
+    </>
   );
 }
 
