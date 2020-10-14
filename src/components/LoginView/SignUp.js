@@ -7,7 +7,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import axios from 'axios';
 
-function SignUp({navigation}) {
+
+// REDUX
+import { connect } from 'react-redux';
+import { login, logout } from '../../store/login';
+
+function SignUp(props, {navigation}) {
+
 
   const { control, handleSubmit, errors } = useForm();
 
@@ -33,7 +39,14 @@ function SignUp({navigation}) {
       // console.log('response body:', response);
       if (response.data === 'success') {
         console.log('success! response:', response);
+
         // navigation.navigate('Map');
+
+        
+        // REDUX
+        props.login(data.username);
+
+
       }
     } catch (error) {
       console.log('error trying to save to database', error);
@@ -128,12 +141,19 @@ function SignUp({navigation}) {
         </Text>
       </TouchableOpacity>
 
+
       <Text style={styles.loginPrompt}>Already Signed Up?</Text>
 
       <Button
         title='Log In Instead.'
         onPress={() => navigation.navigate('LogIn')}
       />
+
+      {/* REDUX */}
+        <Button
+        onPress={ () => props.logout()}
+        title={`Log Out ${props.username}`} />
+        <Text>{props.loggedIn ? 'Logged In' : 'Logged Out'}</Text>
 
     </View>
   )
@@ -194,4 +214,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignUp;
+
+// REDUX
+const mapStateToProps = store => {
+  return {
+    loggedIn: store.logReducer.loggedIn,
+    username: store.logReducer.username
+  }
+}
+const mapDispatchToProps = { login, logout }
+
+
+// REDUX
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
