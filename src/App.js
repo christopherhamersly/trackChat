@@ -11,18 +11,20 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AddGroupTab from './components/GroupAdd.js';
 import MapScreen from './components/Map.js';
 import SignUp from './components/EntryPoint.js';
+import LogIn from './components/LoginView/LogIn.js';
+
+import LoginNav from './components/LoginView/LoginNav.js';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 function App() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Login" component={SignUp} />
-        <Tab.Screen name="Map" component={MapScreen} />
-        <Tab.Screen name="Create Group" component={AddGroupTab} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    // when not logged in display LoginNav
+    <LoginNav />
+
+    // when logged in display Map
+    // <MapScreen />
   );
 }
 

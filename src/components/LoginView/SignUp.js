@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
 import axios from 'axios';
 
-function SignUp() {
+function SignUp({navigation}) {
 
   const { control, handleSubmit, errors } = useForm();
 
@@ -29,6 +33,7 @@ function SignUp() {
       // console.log('response body:', response);
       if (response.data === 'success') {
         console.log('success! response:', response);
+        // navigation.navigate('Map');
       }
     } catch (error) {
       console.log('error trying to save to database', error);
@@ -40,7 +45,7 @@ function SignUp() {
   }
 
   return (
-    <View style={styles.footer}>
+    <View style={styles.container}>
 
       <Text>Username:</Text>
       <Controller
@@ -87,11 +92,11 @@ function SignUp() {
             onBlur={onBlur}
             onChangeText={value => onChange(value)}
             value={value}
-            placeholder={'Optional'}
+            placeholder={'email@domain.com'}
           />
         )}
         name={'email'}
-        rules={{ required: false }}
+        rules={{ required: true }}
         defaultValue=''
       />
       {errors.email && <Text style={styles.errors}>Please enter a valid email address</Text>}
@@ -115,8 +120,21 @@ function SignUp() {
       {errors.password && <Text style={styles.errors}>Please enter a password that is at least 6 characters long.</Text>}
 
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText} onPress={handleSubmit(onSubmit, onError)}>Sign Up</Text>
+        <Text
+        style={styles.buttonText}
+        onPress={handleSubmit(onSubmit, onError)}
+        >
+          Sign Up
+        </Text>
       </TouchableOpacity>
+
+      <Text style={styles.loginPrompt}>Already Signed Up?</Text>
+
+      <Button
+        title='Log In Instead.'
+        onPress={() => navigation.navigate('LogIn')}
+      />
+
     </View>
   )
 }
@@ -128,9 +146,11 @@ function SignUp() {
 
 // let color = getRandomColor();
 
+let { height, width } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
-  footer: {
-    height: 300,
+  container: {
+    height: height,
     backgroundColor: '#f5f5f5',
     alignItems: 'center',
     justifyContent: 'center',
@@ -144,6 +164,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     borderColor: '#48BBEC',
+    marginBottom: 10,
+    marginTop: 5,
   },
   buttonText: {
     fontSize: 18,
@@ -166,7 +188,10 @@ const styles = StyleSheet.create({
     marginTop: 2,
     marginBottom: 8,
     textAlign: 'center'
-  }
+  },
+  loginPrompt: {
+    marginTop: 20,
+  },
 });
 
 export default SignUp;

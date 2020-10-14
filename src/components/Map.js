@@ -15,11 +15,21 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import socketIO from 'socket.io-client';
 
+// import { NavigationContainer } from "@react-navigation/native";
+// import { createStackNavigator } from "@react-navigation/stack";
+// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+// import AddGroupTab from '../components/GroupAdd.js';
+
+// const Tab = createBottomTabNavigator();
+
+import Loading from '../components/Loading.js';
 
 const socket = socketIO('https://trackchat.herokuapp.com')
 
 const Map = () => {
   const [locationPermissions, setLocationPermissions] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [locationResult, setLocationResult] = useState("");
   const [currentLocations, setCurrentLocations] = useState({});
   
@@ -96,12 +106,18 @@ const Map = () => {
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
+    setIsLoading(false);
     repeatingLocations();
   };
 
   return (
     <>
       <View style={styles.container}>
+
+        {isLoading ?
+        
+        <Loading /> : 
+        
         <MapView
           style={styles.map}
           initialRegion={{
@@ -125,11 +141,16 @@ const Map = () => {
           )}
 
         </MapView>
-      </View>
-      <View style={styles.coords}>
-        <Text>
-          Location: {currentLocations.latitude}, {currentLocations.longitude}{" "}
-        </Text>
+        }
+
+        {/* <NavigationContainer>
+          <Tab.Navigator>
+            <Tab.Screen name="Map" component={MapScreen} />
+            <Tab.Screen name="Chat" component={Chat} />
+            <Tab.Screen name="Create Group" component={AddGroupTab} />
+          </Tab.Navigator>
+        </NavigationContainer> */}
+
       </View>
     </>
   );
@@ -137,20 +158,17 @@ const Map = () => {
 
 // STYLING
 
-// add color, add group members
-
 const getRandomColor = () => {
   let hexcode = '#' + Math.random().toString(16).slice(2, 8);
   return hexcode;
 }
+
 let pinColor = getRandomColor();
-
 let { height, width } = Dimensions.get("window");
-
 
 const styles = StyleSheet.create({
   container: {
-    height: height - 350,
+    height: height,
     width: width,
   },
   map: {
@@ -162,13 +180,13 @@ const styles = StyleSheet.create({
 });
 
 
-function MapScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>CURRENTLY ON "MAP SCREEN"</Text>
-      <Map />
-    </View>
-  );
-}
+// function MapScreen() {
+//   return (
+//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+//       <Text>CURRENTLY ON "MAP SCREEN"</Text>
+//       <Map />
+//     </View>
+//   );
+// }
 
-export default MapScreen;
+export default Map;
