@@ -20,7 +20,10 @@ import { connect } from 'react-redux';
 
 const socket = socketIO("https://trackchat.herokuapp.com");
 
+
+
 const Map = (props) => {
+
   const [locationPermissions, setLocationPermissions] = useState(false);
   const [locationResult, setLocationResult] = useState("");
   const [currentLocations, setCurrentLocations] = useState({});
