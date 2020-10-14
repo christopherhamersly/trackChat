@@ -17,6 +17,8 @@ import socketIO from 'socket.io-client';
 
 
 const socket = socketIO('https://trackchat.herokuapp.com')
+// const socket = socketIO('https://localhost:3000')
+
 
 const Map = () => {
   const [locationPermissions, setLocationPermissions] = useState(false);

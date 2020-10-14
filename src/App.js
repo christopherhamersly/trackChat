@@ -11,6 +11,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AddGroupTab from './components/GroupAdd.js';
 import MapScreen from './components/Map.js';
 import SignUp from './components/EntryPoint.js';
+import Chat from './components/Chat.js'
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +22,7 @@ function App() {
         <Tab.Screen name="Login" component={SignUp} />
         <Tab.Screen name="Map" component={MapScreen} />
         <Tab.Screen name="Create Group" component={AddGroupTab} />
+        <Tab.Screen name="Chat Window" component={Chat} />
       </Tab.Navigator>
     </NavigationContainer>
   );
