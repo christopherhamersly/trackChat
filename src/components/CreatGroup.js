@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import SearchUsers from "./SearchBar";
 import fakeDATA from "./FakeData";
+import axios from "axios";
 
 const Add = () => {
   Alert.alert("Added to Group");
@@ -20,12 +21,20 @@ const Delete = () => {
   Alert.alert("Deleted to Group");
 };
 
+// const allUsers = async () => {
+//   await axios.get("https://trackchat.herokuapp.com/signup");
+// }
+
+async function allUsers() {
+
+}
+
 const Item = ({ item, style }) => (
   <View>
     <View key={fakeDATA.phone}>
       <TouchableOpacity style={[styles.item, style]}>
         <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.title}>{item.phone}</Text>
+        {/* <Text style={styles.title}>{item.phone}</Text> */}
         <Button title={"Add to Group"} onPress={Add} />
         <Button title={"Delete to Group"} onPress={Delete} />
       </TouchableOpacity>
@@ -52,6 +61,7 @@ const App = () => {
     <>
       <SafeAreaView style={styles.container}>
         <SearchUsers />
+        {/* <Text style={styles.title}>{JSON.stringify(allUsers)}</Text> */}
         <View style={styles.linearGradient}>
           <FlatList
             data={fakeDATA}

@@ -189,9 +189,6 @@ const styles = StyleSheet.create({
   },
 });
 
-function sosAlert() {
-  Alert.alert("SEND SOS");
-}
 
 // function MapScreen() {
 //   return (

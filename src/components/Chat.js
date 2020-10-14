@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TouchableOpacity, View, TextInput, ScrollView } from 'react-native';
+import { Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TouchableOpacity, View, TextInput, ScrollView, Alert } from 'react-native';
 import * as Permissions from 'expo-permissions';
 import SignUp from './LoginView/SignUp.js';
 import { useForm, Controller } from 'react-hook-form';
 import socketIO from 'socket.io-client';
 import { connect } from 'react-redux';
-// import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 
 const socket = socketIO('https://trackchat.herokuapp.com')
 // const socket = socketIO('http://localhost:3000')
+
+function sosAlert() {
+  Alert.alert("SEND SOS");
+}
 
 function Chat(props) {
 
@@ -28,11 +32,7 @@ function Chat(props) {
 
   const handleSOS = (sos) => {
     console.log('SOS')
-  }
-
-  const handleHelp = (help) => {
-    console.log('HELP')
-    
+    socket.emit('sosBroadcast')
   }
 
   const onError = (errors) => {
@@ -65,29 +65,14 @@ function Chat(props) {
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       {/* <FlatList> */}
       <ScrollView>
-        {chats.map ((chat, i) =>   
-            <Text key={i}>  {chat.username} : {chat.message} </Text>
-        )
-      }
+        {chats.map((chat, i) => (
+          <Text key={i}>
+            {" "}
+            {chat.username} : {chat.message}{" "}
+          </Text>
+        ))}
       </ScrollView>
-        {/* </FlatList> */}
-      <TouchableOpacity style={styles.sosbutton}>
-        <Text
-          style={styles.buttonText}
-          onPress={handleSubmit(handleSOS, onError)}
-        >
-          S O S
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.sosbutton}>
-        <Text
-          style={styles.buttonText}
-          onPress={handleSubmit(handleHelp, onError)}
-        >
-          {" "}
-          HELP{" "}
-        </Text>
-      </TouchableOpacity>
+      {/* </FlatList> */}
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
@@ -109,20 +94,16 @@ function Chat(props) {
           chat
         </Text>
       </TouchableOpacity>
-      {/* <MaterialCommunityIcons
-        name="bell-alert-outline"
-        size={50}
-        color="red"
-        style={styles.sos}
-        onPress={() => sosAlert()}
-      />{" "} */}
-      {/* <MaterialCommunityIcons
-        name="bell-alert-outline"
-        size={50}
-        color="red"
-        style={styles.sos}
-        onPress={() => sosAlert()}
-      /> */}
+      <TouchableOpacity>
+        <MaterialCommunityIcons
+          name="bell-alert-outline"
+          size={50}
+          color="red"
+          style={styles.sos}
+          onPress={handleSubmit(handleSOS, onError)}
+          // onPress={() => sosAlert()}
+        />
+      </TouchableOpacity>
     </View>
   );
 }

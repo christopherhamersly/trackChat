@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import SearchUsers from "./SearchBar";
-import fakeDATA from './FakeData';
+import fakeDATA from "./FakeData";
 
 const Item = ({ item, onPress, style }) => (
   <View>
