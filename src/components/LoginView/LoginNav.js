@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { View, TouchableOpacity, Alert } from "react-native";
+import { View, TouchableOpacity, Alert, StyleSheet } from "react-native";
 import socketIO from "socket.io-client";
 import { connect } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
@@ -15,6 +15,7 @@ import SignUp from "./SignUp.js";
 import Map from "../Map.js";
 import CreatGroup from "../CreatGroup";
 import Chat from "../Chat";
+import styles from '../Styling/styles';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -22,7 +23,7 @@ const Stack = createStackNavigator();
 // function sosAlert() {
 //   Alert.alert("SEND SOS");
 // }
-function sosAlertMap(props) {
+function sosAlertMapChat(props) {
   const [sos, setSos] = useState();
 
   const { control, handleSubmit, handleserrors } = useForm();
@@ -134,11 +135,11 @@ function sosAlertChat(props) {
 
 function LoginNav() {
   return (
-    <NavigationContainer independent={true}>
+    <NavigationContainer style={styles.text} independent={true}>
       <Tab.Navigator>
         <Tab.Screen name="SignUp" component={SignUp} />
         <Tab.Screen name="LogIn" component={LogIn} />
-        <Tab.Screen name="Map" component={sosAlertMap} />
+        <Tab.Screen name="Map" component={sosAlertMapChat} />
         <Tab.Screen name="Create Group" component={CreatGroup} />
         <Tab.Screen name="Chat Window" component={sosAlertChat} />
       </Tab.Navigator>
@@ -155,4 +156,9 @@ const mapStateToProps = (store) => {
   };
 };
 
+//-------Tabs there but alert is falsy
 export default connect(mapStateToProps)(LoginNav);
+
+//------- Alert works but tabs not there
+// export default connect(mapStateToProps)(sosAlertMapChat);
+// export default connect(mapStateToProps)(sosAlertMapChat);

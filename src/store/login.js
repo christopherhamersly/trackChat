@@ -16,6 +16,11 @@ export default (state = initialState, action) => {
         latitude: payload.latitude,
         longitude: payload.longitude,
       };
+    case "USER":
+      return {
+        ...state,
+        username: payload.username,
+      };
     default:
       return state;
   }
@@ -38,6 +43,13 @@ export const logout = () => {
 export const location = (location) => {
   return {
     type: "LOCATION",
+    payload: location,
+  };
+};
+
+export const user = (location) => {
+  return {
+    type: "USER",
     payload: location,
   };
 };

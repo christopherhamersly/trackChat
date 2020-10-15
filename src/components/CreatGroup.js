@@ -15,7 +15,7 @@ import fakeDATA from "./FakeData";
 import axios from "axios";
 
 import { connect } from "react-redux";
-import { login, logout } from "../store/login";
+import { user } from "../store/login";
 
 const Add = () => {
   Alert.alert("Added to Group");
@@ -25,10 +25,12 @@ const Delete = () => {
 };
 
 async function allUsers() {
-  
-  const getUsers = await axios.get("https://trackchat.herokuapp.com/allUsers").then(users => {
-    console.log(users);
-  }).catch(error => console.log(error));
+  await axios
+    .get("https://trackchat.herokuapp.com/getAllUsers")
+    .then((users) => {
+      console.log(users);
+    })
+    .catch((error) => console.log(error));
 }
 
 const Item = ({ item, style }) => (
@@ -39,6 +41,7 @@ const Item = ({ item, style }) => (
         {/* <Text style={styles.title}>{item.phone}</Text> */}
         <Button title={"Add to Group"} onPress={Add} />
         <Button title={"Delete to Group"} onPress={Delete} />
+        <Button title={"Test Button to log allUsers"} onPress={allUsers} />
       </TouchableOpacity>
     </View>
   </View>
@@ -108,4 +111,6 @@ const mapStateToProps = (store) => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = { user };
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
