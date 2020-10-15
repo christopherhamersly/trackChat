@@ -21,7 +21,7 @@ function SearchUsers() {
       />
       <View>
         <Text>{searchUsers}</Text>
-        <Text>{JSON.stringify(fakeDATA)} === FAKE DATA</Text>
+        {/* <Text>{JSON.stringify(fakeDATA)} === FAKE DATA</Text> */}
       </View>
     </>
   );
