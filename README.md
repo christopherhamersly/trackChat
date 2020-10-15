@@ -18,6 +18,7 @@
   - [Data Models](#uml-data-model)
   - [Wireframe](#wireframe)
   - [Approach to Testing](#approach-to-testing)
+  - [Contributing](#contributing)
   - [License](#license)
   - [Acknowledgements / Resources](#resources)
 
@@ -54,24 +55,29 @@ cd trackChat
 ```
 expo start
 ```
-6. Scan the QR code with your camera, and run the app from your phone. 
+6. Download the [expo client](https://expo.io/tools)
+
+7. Scan the QR code with your camera, and run the app from your phone. 
 
 
 ## Deployment
-
+* [Server](https://trackchat.herokuapp.com/) 
+* [App](https://snack.expo.io/@christopherhamersly/trackchat)
+  
 ## Data Models
 ![UML](./assets/uml.png)
 ![ERD](./assets/erd.png)
 ## Data Flow
 * Upon visiting the app for the first time, a new user will create a user instance, that will be populated in the database. 
 * A returning user will use the login option, which sends data to the database to do a check for correct user information.
-* If the information for the user matches a user in the database, the username will be diplayed for the user throughout the app.  
+* If the information for the user matches a user in the database, the username will be displayed for the user throughout the app.  
 * If the information the user inputted does not match the database, the user will be prompted to reenter their credentials. 
-* When entering the app, the user will trigger a map query, and the users current location, and other app users will be displayed on map page. 
+* When entering the app, the user will trigger a map query displaying the users current location. 
+* The app will also the locations of other users.    
 *  The map will update the users location every 3 seconds, and will reset the users position, using latititude and longitude. 
 *  When a user sends a chat, the chat is being sent over a socket, to our deployed server, and being broadcast to all of the users of the app. 
 * When a user sends an SOS, the sos message is send over a socket, to our deployed server, and will be broadcast to all users of the app. 
-*  When a user logs out of the app the socket to the server is closed, and deleted from the socket list, and the users location is no longer rendered. 
+*  When a user logs out of the app, the socket to the server is closed, and deleted from the socket list, and the users location is no longer rendered. 
 *  Data is persisted by using a mongo database. 
 
 
@@ -85,7 +91,10 @@ pendingRequest: ' ',
 email: ' ',
 role: ' ',
 ```
+## Contributing
+* Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
+* Please make sure to update tests as appropriate.
 
 ## Wireframe
 ![Wireframe](./assets/wireframe.png)
@@ -93,7 +102,7 @@ role: ' ',
 ## Approach to Testing
 
 ## License
-
+* [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Resources
 1. [React Native Documentation](https://reactnative.dev/)
