@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Button, Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Picker } from '@react-native-community/picker';
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+import React from 'react';
+import { Button, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import RadioForm, { RadioButton, RadioButtonInput } from 'react-native-simple-radio-button';
 
 import { useForm, Controller } from 'react-hook-form';
-
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-
 import axios from 'axios';
 
 
@@ -15,26 +10,33 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { login, logout } from '../../store/login';
 
+
+
+////////////////////////////////////////////////////////////////////
+// SignUp component adds a user to the database based on user input
+// if all input rules are followed, and if there are no duplicate 
+// usernames, emails, or phone numbers.
+// Returns the rendered form
+// Redirects to the map component suite and updates the state to
+// logged in upon successful sign up
 function SignUp(props) {
 
   const radio_props = [
-    {label: '#1C1D21', value: 0 },
-    {label: '#999999', value: 1 },
-    {label: '#8AC926', value: 2 },
-    {label: '#5DB4EA', value: 3 },
-    {label: '#DE70FF', value: 4 },
-    {label: '#FFADE7', value: 5 },
-    {label: '#FF595E', value: 6 },
-    {label: '#FFCA3A', value: 7 },
+    { label: '#1C1D21', value: 0 },
+    { label: '#999999', value: 1 },
+    { label: '#8AC926', value: 2 },
+    { label: '#5DB4EA', value: 3 },
+    { label: '#DE70FF', value: 4 },
+    { label: '#FFADE7', value: 5 },
+    { label: '#FF595E', value: 6 },
+    { label: '#FFCA3A', value: 7 },
   ];
 
   const { control, handleSubmit, errors } = useForm();
 
   const onSubmit = async (data) => {
 
-    // convert data.color from numeric index value to the hex code label of that index
     data.color = radio_props[data.color].label;
-    console.log('Form Data:', data);
 
     try {
       const response = await axios({
@@ -51,18 +53,14 @@ function SignUp(props) {
       if (response.data === 'used phone number') {
         console.log('used phone number, try another');
       }
-      // console.log('response body:', response);
+
       if (response.data === 'success') {
-        // console.log('success! response:', response);
-        console.log('success!');
 
         // REDUX
         props.login({ username: data.username, color: data.color });
 
-        props.navigation.navigate('userIsIn');
-
         // ROUTE
-
+        props.navigation.navigate('Track Chat');
 
       }
     } catch (error) {
@@ -73,8 +71,6 @@ function SignUp(props) {
   const onError = (errors) => {
     console.log('Errors:', errors)
   }
-
-  let test = true;
 
   return (
     <View style={styles.container}>
@@ -143,6 +139,7 @@ function SignUp(props) {
             onChangeText={value => onChange(value)}
             value={value}
             placeholder={'********'}
+            secureTextEntry={true}
           />
         )}
         name={'password'}
@@ -152,9 +149,9 @@ function SignUp(props) {
       {errors.password && <Text style={styles.errors}>Please enter a password that is at least 6 characters long.</Text>}
 
       <Text>Choose Your Icon Color:</Text>
-      <Controller 
+      <Controller
         control={control}
-        render={({ onChange, onBlur, value}) => (
+        render={({ onChange, onBlur, value }) => (
           <RadioForm
             formHorizontal={true}
             animation={true}
@@ -172,7 +169,7 @@ function SignUp(props) {
                     buttonInnerColor={obj.value === i ? obj.label : '#efefef'}
                     buttonOuterColor={obj.label}
                     buttonStyle={{}}
-                    buttonWrapStyle={{marginLeft: 10, marginTop: 5, marginBottom: 20}}
+                    buttonWrapStyle={{ marginLeft: 10, marginTop: 5, marginBottom: 20 }}
                   />
                 </RadioButton>
               ))
@@ -186,8 +183,8 @@ function SignUp(props) {
 
       <TouchableOpacity style={styles.button}>
         <Text
-        style={styles.buttonText}
-        onPress={handleSubmit(onSubmit, onError)}
+          style={styles.buttonText}
+          onPress={handleSubmit(onSubmit, onError)}
         >
           Sign Up
         </Text>
@@ -198,20 +195,26 @@ function SignUp(props) {
 
       <Button
         title='Log In Instead.'
-        onPress={() => props.navigation.navigate('LogIn')}
+        onPress={() => props.navigation.navigate('Log In')}
       />
 
-      {/* REDUX */}
-        <Button
-        onPress={ () => props.logout()}
-        title={`Log Out ${props.username}`} />
-        <Text>{props.loggedIn ? 'Logged In' : 'Logged Out'}</Text>
+      {/* Still need to move this button */}
+      <TouchableOpacity style={styles.button}>
+        <Text
+          style={styles.buttonText}
+          onPress={() => props.logout()}>
+          Log Out {props.username}
+        </Text>
+      </TouchableOpacity>
 
     </View>
   )
 }
 
-let { height, width } = Dimensions.get("window");
+
+////////////////////////////////////////////////////////////////////
+// Styling
+let { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -260,7 +263,8 @@ const styles = StyleSheet.create({
 });
 
 
-// REDUX
+////////////////////////////////////////////////////////////////////
+// Connection to Redux store
 const mapStateToProps = store => {
   return {
     loggedIn: store.logReducer.loggedIn,
@@ -269,6 +273,4 @@ const mapStateToProps = store => {
 }
 const mapDispatchToProps = { login, logout }
 
-
-// REDUX
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

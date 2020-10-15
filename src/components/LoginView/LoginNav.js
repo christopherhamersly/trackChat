@@ -96,10 +96,6 @@ function SOS4Map(props) {
             ), 
           }} 
         />
-      </Stack.Navigator>
-    </NavigationContainer>
-  ); 
-}
 
 const mapStateToProps = (store) => {
   return {
