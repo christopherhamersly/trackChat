@@ -35,6 +35,7 @@ const Map = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [locationResult, setLocationResult] = useState("");
   const [currentLocations, setCurrentLocations] = useState({});
+  const [sosLocation, setSosLocation] = useState(null);
 
   //key user: value: lat/lon
   const [everyonesPosition, setEveryonesPosition] = useState({});
@@ -50,7 +51,7 @@ const Map = (props) => {
   };
 
   const grabLocation = (latitude, longitude) => {
-    props.location({latitude, longitude});
+    props.location({ latitude, longitude });
     // console.log(user, 'user')
     //may be re rendering between cas and I due to the hard coded user below
     socket.emit("locationBroadcast", {
@@ -71,6 +72,13 @@ const Map = (props) => {
       // console.log('location of a user:', location);
       // this is where we set everyones position
       addUsersToMap(location);
+    });
+    socket.on("sos", (alert) => {
+      setSosLocation({
+        latitude: alert.location.latitude,
+        longitude: alert.location.longitude,
+        user: alert.username,
+      });
     });
     // socket.on('userLeaves', user => {
     //   let everyoneElse = currentLocations;
@@ -135,6 +143,18 @@ const Map = (props) => {
               longitudeDelta: 0.0421,
             }}
           >
+            {sosLocation && (
+              <Marker.Animated
+                coordinate={{
+                  latitude: sosLocation.latitude,
+                  longitude: sosLocation.longitude,
+                }}
+                key={sosLocation.user}
+                pinColor="red"
+                title={sosLocation.user}
+              />
+            )}
+
             {Object.keys(everyonesPosition).map((user) => (
               <Marker.Animated
                 coordinate={{
@@ -214,7 +234,11 @@ function MapScreen(props) {
       /> */}
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>CURRENTLY ON "MAP SCREEN"</Text>
-        <Map username={props.username} location={props.location} loggedIn={props.loggedIn} />
+        <Map
+          username={props.username}
+          location={props.location}
+          loggedIn={props.loggedIn}
+        />
       </View>
     </>
   );

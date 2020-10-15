@@ -66,8 +66,8 @@ function Chat(props) {
 
   useEffect(() => {
     socket.on("sos", (alert) => {
-      (Alert.alert(`${alert} needs help!`));
-      console.log(alert);
+      (Alert.alert(alert.username, `needs help! Located at:${alert.location.latitude} ${alert.location.longitude}`));
+      console.log(`${alert.username} needs help!`);
     });
   }, []);
 
