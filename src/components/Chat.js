@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import socketIO from "socket.io-client";
@@ -54,7 +55,7 @@ function Chat(props) {
 
   return (
     <KeyboardAvoidingView
-  style = {{ flex: 1 }}
+  style = {{ flex: 1, alignItems: "center", justifyContent: "center" }}
   behavior = "padding" >
       <ScrollView style={styles.chat}>
         {chats.map((chat, i) => (
