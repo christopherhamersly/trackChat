@@ -25,9 +25,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const socket = socketIO("https://trackchat.herokuapp.com");
 // const socket = socketIO('http://localhost:3000')
 
-function sosAlert() {
-  Alert.alert("SEND SOS");
-}
+// function sosAlert() {
+//   Alert.alert("SEND SOS");
+// }
 
 function Chat(props) {
   const [chats, setChats] = useState([]);
