@@ -169,7 +169,7 @@ function SignUp(props) {
                     buttonInnerColor={obj.value === i ? obj.label : '#efefef'}
                     buttonOuterColor={obj.label}
                     buttonStyle={{}}
-                    buttonWrapStyle={{marginLeft: 10}}
+                    buttonWrapStyle={{marginLeft: 10, marginTop: 5, marginBottom: 20}}
                   />
                 </RadioButton>
               ))
@@ -228,13 +228,6 @@ const styles = StyleSheet.create({
     borderColor: '#48BBEC',
     marginBottom: 10,
     marginTop: 5,
-  },
-  picker: {
-    height: 25,
-    width: 200,
-    marginBottom: 10,
-    borderWidth: 2,
-    borderColor: 'red',
   },
   buttonText: {
     fontSize: 18,
