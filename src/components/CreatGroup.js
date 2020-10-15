@@ -13,6 +13,7 @@ import {
 import SearchUsers from "./SearchBar";
 import fakeDATA from "./FakeData";
 import axios from "axios";
+import Loading from '../components/Loading'
 
 const Add = () => {
   Alert.alert("Added to Group");
@@ -21,13 +22,14 @@ const Delete = () => {
   Alert.alert("Deleted to Group");
 };
 
-// const allUsers = async () => {
-//   await axios.get("https://trackchat.herokuapp.com/signup");
+// async function allUsers() {
+//   await axios
+//     .get("https://trackchat.herokuapp.com/getusers")
+//     .then((users) => {
+//       console.log(users.data);
+//     })
+//     .catch((error) => console.log(error));
 // }
-
-async function allUsers() {
-
-}
 
 const Item = ({ item, style }) => (
   <View>
@@ -37,13 +39,27 @@ const Item = ({ item, style }) => (
         {/* <Text style={styles.title}>{item.phone}</Text> */}
         <Button title={"Add to Group"} onPress={Add} />
         <Button title={"Delete to Group"} onPress={Delete} />
+        <Button title={"Console.log"} onPress={allUsers} />
       </TouchableOpacity>
     </View>
   </View>
 );
 
-const App = () => {
+const GroupChat = () => {
   const [selectedId, setSelectedId] = useState(null);
+  const [users, setUsers] = useState(null);
+
+  useEffect(() => {
+      async function allUsers() {
+        await axios
+          .get("https://trackchat.herokuapp.com/getusers")
+          .then((users) => {
+            setUsers(users);
+          })
+          .catch((error) => console.log(error));
+      }
+      allUsers();
+  }, [])
 
   const renderItem = ({ item }) => {
     const backgroundColor = "white";
@@ -58,6 +74,7 @@ const App = () => {
   };
 
   return (
+    
     <>
       <SafeAreaView style={styles.container}>
         <SearchUsers />
@@ -101,4 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default GroupChat;
