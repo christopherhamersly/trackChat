@@ -16,6 +16,7 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 import socketIO from "socket.io-client";
 import { connect } from "react-redux";
+import { location } from "../store/login";
 
 // import { NavigationContainer } from "@react-navigation/native";
 // import { createStackNavigator } from "@react-navigation/stack";
@@ -49,6 +50,7 @@ const Map = (props) => {
   };
 
   const grabLocation = (latitude, longitude) => {
+    props.location({latitude, longitude});
     // console.log(user, 'user')
     //may be re rendering between cas and I due to the hard coded user below
     socket.emit("locationBroadcast", {
@@ -124,28 +126,28 @@ const Map = (props) => {
         {isLoading ? (
           <Loading />
         ) : (
-            <MapView
-              style={styles.map}
-              initialRegion={{
-                latitude: currentLocations.latitude,
-                longitude: currentLocations.longitude,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-            >
-              {Object.keys(everyonesPosition).map((user) => (
-                <Marker.Animated
-                  coordinate={{
-                    latitude: everyonesPosition[user].latitude,
-                    longitude: everyonesPosition[user].longitude,
-                  }}
-                  key={user}
-                  pinColor={pinColor}
-                  title={user}
-                />
-              ))}
-            </MapView>
-          )}
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: currentLocations.latitude,
+              longitude: currentLocations.longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          >
+            {Object.keys(everyonesPosition).map((user) => (
+              <Marker.Animated
+                coordinate={{
+                  latitude: everyonesPosition[user].latitude,
+                  longitude: everyonesPosition[user].longitude,
+                }}
+                key={user}
+                pinColor={pinColor}
+                title={user}
+              />
+            ))}
+          </MapView>
+        )}
 
         {/* <NavigationContainer>
           <Tab.Navigator>
@@ -189,7 +191,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 // function MapScreen() {
 //   return (
 //     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
@@ -213,7 +214,7 @@ function MapScreen(props) {
       /> */}
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
         <Text>CURRENTLY ON "MAP SCREEN"</Text>
-        <Map username={props.username} loggedIn={props.loggedIn} />
+        <Map username={props.username} location={props.location} loggedIn={props.loggedIn} />
       </View>
     </>
   );
@@ -226,4 +227,6 @@ const mapStateToProps = (store) => {
   };
 };
 
-export default connect(mapStateToProps)(MapScreen);
+const mapDispatchToProps = { location };
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapScreen);

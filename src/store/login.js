@@ -1,33 +1,43 @@
 let initialState = {
   loggedIn: false,
-  username: ''
-}
+  username: "",
+};
 
 export default (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case 'LOGIN':
-      console.log('login state')
-      return { loggedIn: true, username: payload}
-    case 'LOGOUT':
-      console.log('logout connected')
+    case "LOGIN":
+      return { loggedIn: true, username: payload };
+    case "LOGOUT":
       return initialState;
+    case "LOCATION":
+      return {
+        ...state,
+        latitude: payload.latitude,
+        longitude: payload.longitude,
+      };
     default:
       return state;
   }
-}  
+};
 
-
-export const login = username => {
+export const login = (username) => {
   return {
-    type: 'LOGIN',
+    type: "LOGIN",
     payload: username,
-  }
-}
+  };
+};
 
 export const logout = () => {
   return {
-    type: 'LOGOUT',
-    payload: '',
-  }
-}
+    type: "LOGOUT",
+    payload: "",
+  };
+};
+
+export const location = (location) => {
+  return {
+    type: "LOCATION",
+    payload: location,
+  };
+};
