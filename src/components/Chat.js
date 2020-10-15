@@ -112,7 +112,7 @@ function Chat(props) {
           chat
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <MaterialCommunityIcons
           name="bell-alert-outline"
           size={50}
@@ -121,7 +121,7 @@ function Chat(props) {
           onPress={handleSubmit(handleSOS, onError)}
           // onPress={() => sosAlert()}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }
