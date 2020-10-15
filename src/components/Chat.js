@@ -46,13 +46,6 @@ function Chat(props) {
     console.log("Errors:", errors);
   };
 
-
-  useEffect(() => {
-    socket.on("sos", (alert) => {
-      (Alert.alert(alert.username, `needs help! Located at:${alert.location.latitude} ${alert.location.longitude}`));
-    });
-  }, []);
-
   useEffect(() => {
     socket.on("chat", (chat) => {
       setChats((chats) => [...chats, chat]);
@@ -60,7 +53,9 @@ function Chat(props) {
   }, []);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <KeyboardAvoidingView
+  style = {{ flex: 1 }}
+  behavior = "padding" >
       <ScrollView style={styles.chat}>
         {chats.map((chat, i) => (
           <Text style={styles.chatText} key={i}>
@@ -90,7 +85,7 @@ function Chat(props) {
           CHAT
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <MaterialCommunityIcons
           name="bell-alert-outline"
           size={50}
@@ -98,8 +93,9 @@ function Chat(props) {
           style={styles.sos}
           onPress={handleSubmit(handleSOS, onError)}
         />
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+
+    </KeyboardAvoidingView>
   );
 }
 
