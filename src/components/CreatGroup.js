@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FlatList,
   SafeAreaView,
@@ -22,24 +22,12 @@ const Delete = () => {
   Alert.alert("Deleted to Group");
 };
 
-// async function allUsers() {
-//   await axios
-//     .get("https://trackchat.herokuapp.com/getusers")
-//     .then((users) => {
-//       console.log(users.data);
-//     })
-//     .catch((error) => console.log(error));
-// }
-
 const Item = ({ item, style }) => (
   <View>
-    <View key={fakeDATA.phone}>
+    <View key={item}>
       <TouchableOpacity style={[styles.item, style]}>
-        <Text style={styles.title}>{item.name}</Text>
-        {/* <Text style={styles.title}>{item.phone}</Text> */}
+        <Text style={styles.title}>{item}</Text>
         <Button title={"Add to Group"} onPress={Add} />
-        <Button title={"Delete to Group"} onPress={Delete} />
-        <Button title={"Console.log"} onPress={allUsers} />
       </TouchableOpacity>
     </View>
   </View>
@@ -54,7 +42,8 @@ const GroupChat = () => {
         await axios
           .get("https://trackchat.herokuapp.com/getusers")
           .then((users) => {
-            setUsers(users);
+            setUsers(users.data);
+            console.log(users);
           })
           .catch((error) => console.log(error));
       }
@@ -74,22 +63,20 @@ const GroupChat = () => {
   };
 
   return (
-    
+    !users ? <Loading /> :
     <>
       <SafeAreaView style={styles.container}>
-        <SearchUsers />
-        {/* <Text style={styles.title}>{JSON.stringify(allUsers)}</Text> */}
+        {/* <SearchUsers /> */}
         <View style={styles.linearGradient}>
           <FlatList
-            data={fakeDATA}
+            data={users}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
-            extraData={selectedId}
           />
         </View>
       </SafeAreaView>
     </>
-  );
+    );
 };
 
 const styles = StyleSheet.create({
