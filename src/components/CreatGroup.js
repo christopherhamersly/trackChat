@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FlatList,
   SafeAreaView,
@@ -13,6 +13,7 @@ import {
 import SearchUsers from "./SearchBar";
 import fakeDATA from "./FakeData";
 import axios from "axios";
+import Loading from '../components/Loading'
 
 const Add = () => {
   Alert.alert("Added to Group");
@@ -21,29 +22,33 @@ const Delete = () => {
   Alert.alert("Deleted to Group");
 };
 
-// const allUsers = async () => {
-//   await axios.get("https://trackchat.herokuapp.com/signup");
-// }
-
-async function allUsers() {
-
-}
-
 const Item = ({ item, style }) => (
   <View>
-    <View key={fakeDATA.phone}>
+    <View key={item}>
       <TouchableOpacity style={[styles.item, style]}>
-        <Text style={styles.title}>{item.name}</Text>
-        {/* <Text style={styles.title}>{item.phone}</Text> */}
+        <Text style={styles.title}>{item}</Text>
         <Button title={"Add to Group"} onPress={Add} />
-        <Button title={"Delete to Group"} onPress={Delete} />
       </TouchableOpacity>
     </View>
   </View>
 );
 
-const App = () => {
+const GroupChat = () => {
   const [selectedId, setSelectedId] = useState(null);
+  const [users, setUsers] = useState(null);
+
+  useEffect(() => {
+      async function allUsers() {
+        await axios
+          .get("https://trackchat.herokuapp.com/getusers")
+          .then((users) => {
+            setUsers(users.data);
+            console.log(users);
+          })
+          .catch((error) => console.log(error));
+      }
+      allUsers();
+  }, [])
 
   const renderItem = ({ item }) => {
     const backgroundColor = "white";
@@ -58,21 +63,20 @@ const App = () => {
   };
 
   return (
+    !users ? <Loading /> :
     <>
       <SafeAreaView style={styles.container}>
-        <SearchUsers />
-        {/* <Text style={styles.title}>{JSON.stringify(allUsers)}</Text> */}
+        {/* <SearchUsers /> */}
         <View style={styles.linearGradient}>
           <FlatList
-            data={fakeDATA}
+            data={users}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
-            extraData={selectedId}
           />
         </View>
       </SafeAreaView>
     </>
-  );
+    );
 };
 
 const styles = StyleSheet.create({
@@ -101,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default GroupChat;
