@@ -10,21 +10,16 @@ import {
   Button,
   Alert,
 } from "react-native";
-import SearchUsers from "./SearchBar";
-import fakeDATA from "./FakeData";
 import axios from "axios";
 import Loading from '../components/Loading'
 
 const Add = () => {
   Alert.alert("Added to Group");
 };
-const Delete = () => {
-  Alert.alert("Deleted to Group");
-};
 
 const Item = ({ item, style }) => (
-  <View>
-    <View key={item}>
+  <View key={item}>
+    <View>
       <TouchableOpacity style={[styles.item, style]}>
         <Text style={styles.title}>{item}</Text>
         <Button title={"Add to Group"} onPress={Add} />
@@ -66,12 +61,11 @@ const GroupChat = () => {
     !users ? <Loading /> :
     <>
       <SafeAreaView style={styles.container}>
-        {/* <SearchUsers /> */}
         <View style={styles.linearGradient}>
           <FlatList
             data={users}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => item}
           />
         </View>
       </SafeAreaView>

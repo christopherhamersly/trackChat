@@ -1,23 +1,23 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Alert, Button, Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React from 'react';
+import {  Button, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import base64 from 'base-64'
-
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-
 import axios from 'axios';
 
 import { connect } from 'react-redux';
 import { login, logout } from '../../store/login';
 
-
+////////////////////////////////////////////////////////////////////
+// Login component accepts user properties
+// It indexes the database for the username
+// Upon successful login, navigates to the map component suite
+// Sets the 'state' to logged in with username and color
+// Returns the form input fields
 function LogIn(props) {
 
   const { control, handleSubmit, errors } = useForm();
 
   const onSubmit = async (data) => {
-    console.log('Form Data:', data);
     
     try {
       const authHeader = 'Basic ' + base64.encode(`${data.username}:${data.password}`);
@@ -31,19 +31,16 @@ function LogIn(props) {
         }
   
       )
-        console.log(response)
       if (response.status === 200) {
-        // console.log('----RESPONSE----', response);
-        // console.log('COLOR?', response.data.user.color);
         props.login({ username: data.username, color: response.data.user.color});
-        props.navigation.navigate('userIsIn');
-        console.log('successfully logged in');
+        props.navigation.navigate('Track Chat');
       }
     } catch (error) {
-      console.log('user does not exist', error);
+      console.log('User does not exist', error);
     }
   }
 
+  // Bad form input
   const onError = (errors) => {
     console.log('Errors:', errors)
   }
@@ -79,6 +76,7 @@ function LogIn(props) {
           onChangeText={ value => onChange(value) }
           value={value}
           placeholder={'********'}
+          secureTextEntry={true}
           />
         )}
         name={'password'}
@@ -95,21 +93,15 @@ function LogIn(props) {
 
       <Button
         title='Sign Up.'
-        onPress={() => props.navigation.navigate('SignUp')}
+        onPress={() => props.navigation.navigate('Sign Up')}
       />
 
     </View>
   )
 }
-
-// const getRandomColor = () => {
-//   let hexcode = '#' + Math.random().toString(16).slice(2, 8);
-//   return hexcode;
-// }
-
-// let color = getRandomColor();
-
-let { height, width } = Dimensions.get("window");
+////////////////////////////////////////////////////////////////////
+// Styling
+let { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   container: {
@@ -157,6 +149,9 @@ const styles = StyleSheet.create({
   }
 });
 
+
+////////////////////////////////////////////////////////////////////
+// Connection to Redux store
 const mapStateToProps = store => {
   return {
     loggedIn: store.logReducer.loggedIn,
@@ -164,6 +159,5 @@ const mapStateToProps = store => {
   }
 }
 const mapDispatchToProps = { login, logout }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
