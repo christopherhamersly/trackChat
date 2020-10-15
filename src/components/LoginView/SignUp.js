@@ -58,8 +58,11 @@ function SignUp(props) {
 
         // REDUX
         props.login(data.username);
+
+        props.navigation.navigate('userIsIn');
+
         // ROUTE
-        props.navigation.navigate('Map');
+
 
       }
     } catch (error) {

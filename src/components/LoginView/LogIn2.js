@@ -34,7 +34,7 @@ function LogIn(props) {
         console.log(response)
       if (response.status === 200) {
         props.login(data.username);
-        props.navigation.navigate('Map')
+        props.navigation.navigate('userIsIn');
         console.log('successfully logged in');
       }
     } catch (error) {
