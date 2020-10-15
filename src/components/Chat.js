@@ -82,9 +82,9 @@ function Chat(props) {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       {/* <FlatList> */}
-      <ScrollView>
+      <ScrollView style={styles.chat}>
         {chats.map((chat, i) => (
-          <Text key={i}>
+          <Text style={styles.chatText} key={i}>
             {" "}
             {chat.username} : {chat.message}{" "}
           </Text>
@@ -109,7 +109,7 @@ function Chat(props) {
           style={styles.buttonText}
           onPress={handleSubmit(onSubmit, onError)}
         >
-          chat
+          CHAT
         </Text>
       </TouchableOpacity>
       <TouchableOpacity>
@@ -134,6 +134,23 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignSelf: "stretch",
   },
+  chat:{
+    marginTop: 130,
+    marginBottom: 60,
+    backgroundColor: "#d8e4f0",
+    paddingRight: 170,
+    paddingLeft: 20,
+    borderColor: "#6d6f70"
+    
+
+  },
+  chatText:{
+    fontWeight: "300",
+    fontFamily: 'Helvetica Neue',
+    padding: 7,
+    textAlign: 'justify'
+    
+  },
   input: {
     height: 50,
     width: 200,
@@ -147,6 +164,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "white",
     alignSelf: "center",
+    fontFamily: 'Helvetica Neue'
   },
   button: {
     height: 36,
