@@ -12,28 +12,29 @@ import Chat from '../Chat'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-// HELP LINK https://reactnavigation.org/docs/nesting-navigators/#navigating-to-a-screen-in-a-nested-navigator
+
+////////////////////////////////////////////////////////////////////
+// Root component has tabs for the Map suite
 function Root() {
   return (
-    // <NavigationContainer independent={true}>
+
       <Tab.Navigator>
-        {/* <Tab.Screen name="SignUp" component={SignUp} /> */}
-        {/* <Tab.Screen name="LogIn" component={LogIn} /> */}
         <Tab.Screen name="Map" component={Map} />
         <Tab.Screen name="Create Group" component={CreatGroup} />
         <Tab.Screen name="Chat Window" component={Chat} />
       </Tab.Navigator>
-    // </NavigationContainer>
   );
 }
 
+////////////////////////////////////////////////////////////////////
+// HideTabBar has the screen stack for the Login and Signup
 function HideTabBar() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Root">
-        <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="LogIn" component={LogIn} />
-        <Stack.Screen name="userIsIn" component={Root} />
+        <Stack.Screen name="Sign Up" component={SignUp} />
+        <Stack.Screen name="Log In" component={LogIn} />
+        <Stack.Screen name="Track Chat" component={Root} />
       </Stack.Navigator>
     </NavigationContainer>
   );
