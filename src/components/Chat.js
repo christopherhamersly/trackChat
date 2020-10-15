@@ -64,12 +64,12 @@ function Chat(props) {
     // setChats((chats) => [...chats, chat])
   };
 
-  useEffect(() => {
-    socket.on("sos", (alert) => {
-      (Alert.alert(alert.username, `needs help! Located at:${alert.location.latitude} ${alert.location.longitude}`));
-      console.log(`${alert.username} needs help!`);
-    });
-  }, []);
+  // useEffect(() => {
+  //   socket.on("sos", (alert) => {
+  //     (Alert.alert(alert.username, `needs help! Located at:${alert.location.latitude} ${alert.location.longitude}`));
+  //     console.log(`${alert.username} needs help!`);
+  //   });
+  // }, []);
 
   useEffect(() => {
     socket.on("chat", (chat) => {
@@ -80,8 +80,9 @@ function Chat(props) {
   }, []);
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      {/* <FlatList> */}
+    <KeyboardAvoidingView
+  style = {{ flex: 1 }}
+  behavior = "padding" >
       <ScrollView style={styles.chat}>
         {chats.map((chat, i) => (
           <Text style={styles.chatText} key={i}>
@@ -112,7 +113,7 @@ function Chat(props) {
           CHAT
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      {/* <TouchableOpacity>
         <MaterialCommunityIcons
           name="bell-alert-outline"
           size={50}
@@ -121,8 +122,9 @@ function Chat(props) {
           onPress={handleSubmit(handleSOS, onError)}
           // onPress={() => sosAlert()}
         />
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+
+    </KeyboardAvoidingView>
   );
 }
 

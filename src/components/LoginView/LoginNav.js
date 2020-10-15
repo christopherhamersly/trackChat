@@ -24,11 +24,11 @@ function testAlert() {
 }
 
 function SOS4Map(props) {
-    const [sos, setSos] = useState();
+  const [sos, setSos] = useState();
 
   const { control, handleSubmit, handleserrors } = useForm();
 
-    const handleSOS = (sos) => {
+  const handleSOS = (sos) => {
     console.log("SOS");
     socket.emit("sosBroadcast", {
       username: props.username,
@@ -43,9 +43,9 @@ function SOS4Map(props) {
 
   useEffect(() => {
     socket.on("sos", (alert) => {
+      const message = `Needs help! \n Located at: ${alert.location.latitude}, ${alert.location.longitude}`
       Alert.alert(
-        alert.username,
-        `needs help! Located at:${alert.location.latitude} ${alert.location.longitude}`
+        alert.username, message
       );
       console.log(`${alert} needs help!`);
     });
@@ -66,41 +66,22 @@ function SOS4Map(props) {
       <Stack.Navigator initialRouteName="Root">
         <Stack.Screen 
         name="SignUp" 
-        component={SignUp} 
-        // options={{
-        //     headerTitle: "Map",
-        //     headerRight: () => (
-        //       <TouchableOpacity>
-        //         <MaterialCommunityIcons
-        //           name="bell-alert-outline"
-        //           size={35}
-        //           color="red"
-        //           // style={styles.sos}
-        //           onPress={handleSubmit(handleSOS, onError)}
-        //           // onPress={() => testAlert()}
-        //         />
-        //       </TouchableOpacity>
-        //     ), 
-        //   }} 
-        />
-        <Stack.Screen name="LogIn" component={LogIn} options={{
-            headerTitle: "Map",
-            headerRight: () => (
-              <TouchableOpacity>
+        component={SignUp}/>
+        <Stack.Screen name="LogIn" component={LogIn}/>
+        <Stack.Screen name="userIsIn" component={Root} options={{
+          headerTitle: "TrackChat",
+          headerLeft: () => (
+                          <TouchableOpacity>
                 <MaterialCommunityIcons
                   name="bell-alert-outline"
                   size={35}
                   color="red"
                   // style={styles.sos}
-                  onPress={handleSubmit(handleSOS, onError)}
-                  // onPress={() => testAlert()}
+                  // onPress={handleSubmit(handleSOS, onError)}
+                  onPress={() => testAlert()}
                 />
               </TouchableOpacity>
-            ), 
-          }} 
-        />
-        <Stack.Screen name="userIsIn" component={Root} options={{
-            headerTitle: "TrackChat",
+          ),
             headerRight: () => (
               <TouchableOpacity>
                 <MaterialCommunityIcons
