@@ -33,7 +33,9 @@ function LogIn(props) {
       )
         console.log(response)
       if (response.status === 200) {
-        props.login(data.username);
+        // console.log('----RESPONSE----', response);
+        // console.log('COLOR?', response.data.user.color);
+        props.login({ username: data.username, color: response.data.user.color});
         props.navigation.navigate('userIsIn');
         console.log('successfully logged in');
       }

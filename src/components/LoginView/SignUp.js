@@ -57,7 +57,7 @@ function SignUp(props) {
         console.log('success!');
 
         // REDUX
-        props.login(data.username);
+        props.login({ username: data.username, color: data.color });
 
         props.navigation.navigate('userIsIn');
 
