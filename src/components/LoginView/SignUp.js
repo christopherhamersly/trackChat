@@ -44,7 +44,7 @@ function SignUp(props /*, { navigation }*/) {
         // REDUX
         props.login(data.username);
 
-        props.navigation.navigate('Map');
+        props.navigation.navigate('userIsIn');
 
         
 
