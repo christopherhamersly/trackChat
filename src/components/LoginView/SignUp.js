@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Alert, Button, Dimensions, Form, Image, FlatList, Platform, StyleSheet, Switch, TabBarIOS, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Picker } from '@react-native-community/picker';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
+
 import { useForm, Controller } from 'react-hook-form';
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,15 +15,27 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { login, logout } from '../../store/login';
 
-function SignUp(props /*, { navigation }*/) {
+function SignUp(props) {
 
+  const radio_props = [
+    {label: '#1C1D21', value: 0 },
+    {label: '#999999', value: 1 },
+    {label: '#8AC926', value: 2 },
+    {label: '#5DB4EA', value: 3 },
+    {label: '#DE70FF', value: 4 },
+    {label: '#FFADE7', value: 5 },
+    {label: '#FF595E', value: 6 },
+    {label: '#FFCA3A', value: 7 },
+  ];
 
   const { control, handleSubmit, errors } = useForm();
 
   const onSubmit = async (data) => {
+
+    // convert data.color from numeric index value to the hex code label of that index
+    data.color = radio_props[data.color].label;
     console.log('Form Data:', data);
-    if (data.email === '') { delete data.email }
-    console.log(data)
+
     try {
       const response = await axios({
         method: 'post',
@@ -38,16 +53,13 @@ function SignUp(props /*, { navigation }*/) {
       }
       // console.log('response body:', response);
       if (response.data === 'success') {
-        console.log('success! response:', response);
+        // console.log('success! response:', response);
+        console.log('success!');
 
-       
         // REDUX
         props.login(data.username);
-
+        // ROUTE
         props.navigation.navigate('Map');
-
-        
-
 
       }
     } catch (error) {
@@ -58,6 +70,8 @@ function SignUp(props /*, { navigation }*/) {
   const onError = (errors) => {
     console.log('Errors:', errors)
   }
+
+  let test = true;
 
   return (
     <View style={styles.container}>
@@ -134,6 +148,39 @@ function SignUp(props /*, { navigation }*/) {
       />
       {errors.password && <Text style={styles.errors}>Please enter a password that is at least 6 characters long.</Text>}
 
+      <Text>Choose Your Icon Color:</Text>
+      <Controller 
+        control={control}
+        render={({ onChange, onBlur, value}) => (
+          <RadioForm
+            formHorizontal={true}
+            animation={true}
+          >
+            {
+              radio_props.map((obj, i) => (
+                <RadioButton labelHorizontal={true} key={i} >
+                  <RadioButtonInput
+                    obj={obj}
+                    index={i}
+                    onBlur={onBlur}
+                    onPress={value => onChange(value)}
+                    value={value}
+                    isSelected={(obj.value === value)}
+                    buttonInnerColor={obj.value === i ? obj.label : '#efefef'}
+                    buttonOuterColor={obj.label}
+                    buttonStyle={{}}
+                    buttonWrapStyle={{marginLeft: 10, marginTop: 5, marginBottom: 20}}
+                  />
+                </RadioButton>
+              ))
+            }
+          </RadioForm>
+        )}
+        name={'color'}
+        rules={{ required: true }}
+        defaultValue={0}
+      />
+
       <TouchableOpacity style={styles.button}>
         <Text
         style={styles.buttonText}
@@ -160,13 +207,6 @@ function SignUp(props /*, { navigation }*/) {
     </View>
   )
 }
-
-// const getRandomColor = () => {
-//   let hexcode = '#' + Math.random().toString(16).slice(2, 8);
-//   return hexcode;
-// }
-
-// let color = getRandomColor();
 
 let { height, width } = Dimensions.get("window");
 
