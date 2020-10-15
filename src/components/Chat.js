@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
-  Dimensions,
-  Form,
-  Image,
-  FlatList,
-  Platform,
   StyleSheet,
-  Switch,
-  TabBarIOS,
   Text,
   TouchableOpacity,
   View,
@@ -20,7 +13,7 @@ import SignUp from "./LoginView/SignUp.js";
 import { useForm, Controller } from "react-hook-form";
 import socketIO from "socket.io-client";
 import { connect } from "react-redux";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+// import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const socket = socketIO("https://trackchat.herokuapp.com");
 // const socket = socketIO('http://localhost:3000')

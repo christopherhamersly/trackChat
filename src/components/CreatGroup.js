@@ -14,6 +14,9 @@ import SearchUsers from "./SearchBar";
 import fakeDATA from "./FakeData";
 import axios from "axios";
 
+import { connect } from "react-redux";
+import { login, logout } from "../store/login";
+
 const Add = () => {
   Alert.alert("Added to Group");
 };
@@ -21,12 +24,11 @@ const Delete = () => {
   Alert.alert("Deleted to Group");
 };
 
-// const allUsers = async () => {
-//   await axios.get("https://trackchat.herokuapp.com/signup");
-// }
-
 async function allUsers() {
-
+  
+  const getUsers = await axios.get("https://trackchat.herokuapp.com/allUsers").then(users => {
+    console.log(users);
+  }).catch(error => console.log(error));
 }
 
 const Item = ({ item, style }) => (
@@ -61,13 +63,12 @@ const App = () => {
     <>
       <SafeAreaView style={styles.container}>
         <SearchUsers />
-        {/* <Text style={styles.title}>{JSON.stringify(allUsers)}</Text> */}
+        {/* <Text style={allUsers()}></Text> */}
         <View style={styles.linearGradient}>
           <FlatList
             data={fakeDATA}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
-            extraData={selectedId}
           />
         </View>
       </SafeAreaView>
@@ -101,4 +102,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+const mapStateToProps = (store) => {
+  return {
+    username: store.logReducer.username,
+  };
+};
+
+export default connect(mapStateToProps)(App);
