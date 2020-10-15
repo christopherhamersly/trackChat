@@ -47,7 +47,7 @@ function SOS4Map(props) {
         alert.username,
         `needs help! Located at:${alert.location.latitude} ${alert.location.longitude}`
       );
-      console.log(`${alert.username} needs help!`);
+      console.log(`${alert} needs help!`);
     });
   }, []);
 
@@ -92,8 +92,8 @@ function SOS4Map(props) {
                   size={35}
                   color="red"
                   // style={styles.sos}
-                  // onPress={handleSubmit(handleSOS, onError)}
-                  onPress={() => testAlert()}
+                  onPress={handleSubmit(handleSOS, onError)}
+                  // onPress={() => testAlert()}
                 />
               </TouchableOpacity>
             ), 
@@ -108,8 +108,8 @@ function SOS4Map(props) {
                   size={35}
                   color="red"
                   // style={styles.sos}
-                  // onPress={handleSubmit(handleSOS, onError)}
-                  onPress={() => testAlert()}
+                  onPress={handleSubmit(handleSOS, onError)}
+                  // onPress={() => testAlert()}
                 />
               </TouchableOpacity>
             ), 
@@ -129,4 +129,4 @@ const mapStateToProps = (store) => {
   };
 };
 
-export default SOS4Map;
+export default connect(mapStateToProps)(SOS4Map);
