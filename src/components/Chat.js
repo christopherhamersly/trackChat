@@ -126,6 +126,8 @@ function Chat(props) {
   );
 }
 
+let { height, width } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   footer: {
     height: 300,
@@ -135,19 +137,24 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   chat:{
-    marginTop: 130,
-    marginBottom: 60,
+    marginTop: 20,
+    marginBottom: 20,
     backgroundColor: "#d8e4f0",
     paddingRight: 170,
+    paddingTop: 20,
     paddingLeft: 20,
-    borderColor: "#6d6f70"
+    paddingBottom: 20,
+    borderColor: "#6d6f70",
+    width: width -30,
+    height: height - 250,
+    lineHeight: 3
     
 
   },
   chatText:{
     fontWeight: "300",
     fontFamily: 'Helvetica Neue',
-    padding: 7,
+    marginBottom: 5,
     textAlign: 'justify'
     
   },
