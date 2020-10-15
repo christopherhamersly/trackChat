@@ -110,7 +110,7 @@ function sosAlertChat(props) {
     <NavigationContainer independent={true}>
       <Stack.Navigator>
         <Stack.Screen
-          name="Map"
+          name="Group Chat"
           component={Chat}
           options={{
             headerTitle: "Group Chat",

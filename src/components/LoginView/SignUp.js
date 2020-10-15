@@ -144,10 +144,10 @@ function SignUp(props, {navigation}) {
 
       <Text style={styles.loginPrompt}>Already Signed Up?</Text>
 
-      <Button
+      {/* <Button
         title='Log In Instead.'
         onPress={() => navigation.navigate('LogIn')}
-      />
+      /> */}
 
       {/* REDUX */}
         <Button
