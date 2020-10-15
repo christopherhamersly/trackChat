@@ -12,8 +12,8 @@ import Chat from '../Chat'
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
-function LoginNav() {
+// HELP LINK https://reactnavigation.org/docs/nesting-navigators/#navigating-to-a-screen-in-a-nested-navigator
+function Root() {
   return (
     // <NavigationContainer independent={true}>
       <Tab.Navigator>
@@ -30,9 +30,10 @@ function LoginNav() {
 function HideTabBar() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator initialRouteName="Root">
         {/* <Stack.Screen name="SignUp" component={SignUp} /> */}
-        <Stack.Screen name="userIsIn" component={LoginNav} />
+        {/* <Stack.Screen name="LogIn" component={LogIn} /> */}
+        <Stack.Screen name="userIsIn" component={Root} />
       </Stack.Navigator>
     </NavigationContainer>
   );
