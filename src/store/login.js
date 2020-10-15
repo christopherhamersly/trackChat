@@ -1,13 +1,14 @@
 let initialState = {
   loggedIn: false,
   username: "",
+  color: "",
 };
 
 export default (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case "LOGIN":
-      return { loggedIn: true, username: payload };
+      return { loggedIn: true, username: payload.username, color: payload.color };
     case "LOGOUT":
       return initialState;
     case "LOCATION":
@@ -21,10 +22,10 @@ export default (state = initialState, action) => {
   }
 };
 
-export const login = (username) => {
+export const login = (userObj) => {
   return {
     type: "LOGIN",
-    payload: username,
+    payload: { username: userObj.username, color: userObj.color }
   };
 };
 

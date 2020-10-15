@@ -53,11 +53,11 @@ const Map = (props) => {
   const grabLocation = (latitude, longitude) => {
     props.location({ latitude, longitude });
     // console.log(user, 'user')
-    //may be re rendering between cas and I due to the hard coded user below
     socket.emit("locationBroadcast", {
       user: props.loggedIn ? props.username : "user",
       latitude,
       longitude,
+      color: props.color,
     });
     // socket.emit('locationBroadcast', { user: 'fake', latitude: 47.61625, longitude: -122.3119 })
   };
@@ -95,6 +95,7 @@ const Map = (props) => {
       [location.user]: {
         latitude: location.latitude,
         longitude: location.longitude,
+        color: location.color,
       },
     }));
   };
@@ -162,7 +163,7 @@ const Map = (props) => {
                   longitude: everyonesPosition[user].longitude,
                 }}
                 key={user}
-                pinColor={pinColor}
+                pinColor={everyonesPosition[user].color}
                 title={user}
               />
             ))}
@@ -187,9 +188,6 @@ const getRandomColor = () => {
   let hexcode = "#" + Math.random().toString(16).slice(2, 8);
   return hexcode;
 };
-
-// };
-// let pinColor = getRandomColor();
 
 let pinColor = getRandomColor();
 let { height, width } = Dimensions.get("window");
@@ -238,6 +236,7 @@ function MapScreen(props) {
           username={props.username}
           location={props.location}
           loggedIn={props.loggedIn}
+          color={props.color}
         />
       </View>
     </>
@@ -248,6 +247,7 @@ const mapStateToProps = (store) => {
   return {
     loggedIn: store.logReducer.loggedIn,
     username: store.logReducer.username,
+    color: store.logReducer.color,
   };
 };
 
