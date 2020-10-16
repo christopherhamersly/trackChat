@@ -14,6 +14,7 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import * as Permissions from "expo-permissions";
 import SignUp from "./LoginView/SignUp.js";
