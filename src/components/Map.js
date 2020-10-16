@@ -133,7 +133,7 @@ const Map = (props) => {
     <>
       <View style={styles.container}>
         {isLoading ? (
-          <Loading />
+          <Loading data-testid="loadingComponent" />
         ) : (
           <MapView
             style={styles.map}
