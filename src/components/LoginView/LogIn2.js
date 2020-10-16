@@ -85,9 +85,27 @@ function LogIn(props) {
       />
       {errors.password && <Text style={styles.errors}>Please enter your password.</Text>}
 
+      { !props.loggedIn ?
+      
       <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText} onPress={handleSubmit(onSubmit, onError)}>Login</Text>
+          <Text
+            style={styles.buttonText}
+            onPress={handleSubmit(onSubmit, onError)}
+            >
+              Log In
+          </Text>
+      </TouchableOpacity> :
+
+      <TouchableOpacity style={styles.button}>
+        <Text
+          style={styles.buttonText}
+          onPress={() => props.logout()}>
+          Log Out
+        </Text>
       </TouchableOpacity>
+    
+      }
+
 
       <Text style={styles.loginPrompt}>Don't Have An Account?</Text>
 

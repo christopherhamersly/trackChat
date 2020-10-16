@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import {
   Dimensions,
+  Form,
+  Image,
+  FlatList,
+  Platform,
   StyleSheet,
+  Switch,
+  TabBarIOS,
   Text,
   TouchableOpacity,
   View,
@@ -10,32 +16,39 @@ import {
   Alert,
   KeyboardAvoidingView
 } from "react-native";
+import * as Permissions from "expo-permissions";
+import SignUp from "./LoginView/SignUp.js";
 import { useForm, Controller } from "react-hook-form";
 import socketIO from "socket.io-client";
 import { connect } from "react-redux";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const socket = socketIO("https://trackchat.herokuapp.com");
+// const socket = socketIO('http://localhost:3000')
 
-////////////////////////////////////////////////////////////////////
-// The Chat component emits chat messages through sockets, and listens
-// for socket emissions from the server. It has an SOS button that
-// also emits a socket signal and alerts all users to the sender's
-// position.
-// Renders the chat screen and input field.
+function sosAlert() {
+  Alert.alert("SEND SOS");
+}
+
 function Chat(props) {
   const [chats, setChats] = useState([]);
+  const [sos, setSos] = useState();
+  const [help, setHelp] = useState();
 
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, handleserrors } = useForm();
 
   const onSubmit = (chat) => {
+    // console.log('Username:', props.username)
+    console.log("Chat:", chat);
     socket.emit("chatBroadcast", {
       username: props.username,
       message: chat.chat,
     });
+    console.log("chat", chat);
   };
 
   const handleSOS = (sos) => {
+    console.log("SOS");
     socket.emit("sosBroadcast", {
       username: props.username,
       location: { latitude: props.latitude, longitude: props.longitude },
@@ -47,16 +60,30 @@ function Chat(props) {
     console.log("Errors:", errors);
   };
 
+  const addChatToWindow = (chat) => {
+    console.log("chat received", chat);
+    // setChats((chats) => [...chats, chat])
+  };
+
+  useEffect(() => {
+    socket.on("sos", (alert) => {
+      (Alert.alert(alert.username, `Needs help! \n Located at: \n ${alert.location.latitude}, ${alert.location.longitude}`));
+      console.log(`${alert.username} needs help!`);
+    });
+  }, []);
+
   useEffect(() => {
     socket.on("chat", (chat) => {
+      // addChatToWindow(chat);
+      console.log("chats from use effect", chats);
       setChats((chats) => [...chats, chat]);
     });
   }, []);
 
   return (
     <KeyboardAvoidingView
-  style = {{ flex: 1, alignItems: "center", justifyContent: "center" }}
-  behavior = "padding" >
+      style = {{ flex: 1, alignItems: "center", justifyContent: "center"}}
+      behavior = "padding" >
       <ScrollView style={styles.chat}>
         {chats.map((chat, i) => (
           <Text style={styles.chatText} key={i}>
@@ -65,6 +92,7 @@ function Chat(props) {
           </Text>
         ))}
       </ScrollView>
+      {/* </FlatList> */}
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
@@ -86,23 +114,23 @@ function Chat(props) {
           CHAT
         </Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity>
+
+      <TouchableOpacity>
         <MaterialCommunityIcons
           name="bell-alert-outline"
           size={50}
           color="red"
           style={styles.sos}
           onPress={handleSubmit(handleSOS, onError)}
+          // onPress={() => sosAlert()}
         />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
     </KeyboardAvoidingView>
   );
 }
 
-////////////////////////////////////////////////////////////////////
-// Styling
-let { height, width } = Dimensions.get('window');
+let { height, width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   footer: {
@@ -113,29 +141,26 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
   },
   chat:{
-    marginTop: 20,
+    marginTop: 130,
     marginBottom: 20,
     backgroundColor: "#d8e4f0",
-    paddingRight: 170,
-    paddingTop: 20,
+    paddingRight: 20,
     paddingLeft: 20,
-    paddingBottom: 20,
     borderColor: "#6d6f70",
-    width: width -30,
-    height: height - 250,
-    lineHeight: 3
-    
+    width: width - 50,
+    height: height -200,
+
   },
   chatText:{
     fontWeight: "300",
     fontFamily: 'Helvetica Neue',
-    marginBottom: 5,
+    padding: 7,
     textAlign: 'justify'
     
   },
   input: {
     height: 50,
-    width: 200,
+    width: width - 50,
     padding: 5,
     backgroundColor: "#fff",
     borderWidth: 1,
@@ -178,8 +203,6 @@ const styles = StyleSheet.create({
   },
 });
 
-////////////////////////////////////////////////////////////////////
-// Connection to Redux store
 const mapStateToProps = (store) => {
   return {
     loggedIn: store.logReducer.loggedIn,
