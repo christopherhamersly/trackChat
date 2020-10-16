@@ -17,5 +17,22 @@ it('should show sign up page', async () => {
     <Provider store={store}><SignUp /></Provider>
   );
 
-  await getByText('Password:');
+  let signUp = await getByText('Sign Up');
+  expect(signUp).toBeTruthy();
+});
+
+it('should show sign up page', async () => {
+  const store = mockStore({
+    logReducer: {
+      username:'jane.doe', 
+      loggedIn:true
+    }
+  });
+
+  const { getByText } = render(
+    <Provider store={store}><SignUp /></Provider>
+  );
+
+  let logout = await getByText('Log Out');
+  expect(logout).toBeTruthy();
 });
