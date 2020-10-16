@@ -1,5 +1,13 @@
 import React from 'react';
-import {  Button, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Button,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import base64 from 'base-64'
 import axios from 'axios';
@@ -13,6 +21,8 @@ import { login, logout } from '../../store/login';
 // Upon successful login, navigates to the map component suite
 // Sets the 'state' to logged in with username and color
 // Returns the form input fields
+////////////////////////////////////////////////////////////////////
+
 function LogIn(props) {
 
   const { control, handleSubmit, errors } = useForm();
@@ -117,8 +127,11 @@ function LogIn(props) {
     </View>
   )
 }
+
 ////////////////////////////////////////////////////////////////////
 // Styling
+////////////////////////////////////////////////////////////////////
+
 let { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
@@ -167,9 +180,10 @@ const styles = StyleSheet.create({
   }
 });
 
-
 ////////////////////////////////////////////////////////////////////
 // Connection to Redux store
+////////////////////////////////////////////////////////////////////
+
 const mapStateToProps = store => {
   return {
     loggedIn: store.logReducer.loggedIn,

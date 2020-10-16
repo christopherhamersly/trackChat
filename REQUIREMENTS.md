@@ -1,14 +1,5 @@
 # Software Requirements
 
-Use this app with an iPhone and the Expo client app. Test the app with the following steps: 
-```
-git clone https://github.com/trackChat/trackChat.git
-cd trackchat
-npm i
-npm start
-```
-Scan the QR code with your iPhone
-
 ### Vision: 
 A simple and easy to use phone app that allows users to view the location of a group of users on a map. They will also have the ability to chat with each other in the app and send an SOS message in case they are in trouble. 
 

@@ -13,10 +13,12 @@ import {
 import axios from "axios";
 import Loading from '../components/Loading'
 
+// Sends an alert when user added to group
 const Add = () => {
   Alert.alert("Added to Group");
 };
 
+// Cards Representing each user in the Database
 const Item = ({ item, style }) => (
   <View key={item}>
     <View>
@@ -28,6 +30,13 @@ const Item = ({ item, style }) => (
   </View>
 );
 
+////////////////////////////////////////////////////////////////////
+// GroupChat component indexes database for all users
+// Renders a list of cards representing all users with key=username
+// Cards include button to Add user to group
+// Add button triggers an alert to signal successful add
+////////////////////////////////////////////////////////////////////
+
 const GroupChat = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [users, setUsers] = useState(null);
@@ -38,7 +47,6 @@ const GroupChat = () => {
           .get("https://trackchat.herokuapp.com/getusers")
           .then((users) => {
             setUsers(users.data);
-            console.log(users);
           })
           .catch((error) => console.log(error));
       }
@@ -72,6 +80,10 @@ const GroupChat = () => {
     </>
     );
 };
+
+////////////////////////////////////////////////////////////////////
+// Styling
+////////////////////////////////////////////////////////////////////
 
 const styles = StyleSheet.create({
   container: {

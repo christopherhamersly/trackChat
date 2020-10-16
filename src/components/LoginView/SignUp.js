@@ -1,16 +1,21 @@
 import React from 'react';
-import { Button, Dimensions, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Button,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
+} from 'react-native';
 import RadioForm, { RadioButton, RadioButtonInput } from 'react-native-simple-radio-button';
 
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 
-
 // REDUX
 import { connect } from 'react-redux';
 import { login, logout } from '../../store/login';
-
-
 
 ////////////////////////////////////////////////////////////////////
 // SignUp component adds a user to the database based on user input
@@ -19,6 +24,8 @@ import { login, logout } from '../../store/login';
 // Returns the rendered form
 // Redirects to the map component suite and updates the state to
 // logged in upon successful sign up
+////////////////////////////////////////////////////////////////////
+
 function SignUp(props) {
 
   const radio_props = [
@@ -44,6 +51,8 @@ function SignUp(props) {
         url: 'https://trackchat.herokuapp.com/signup',
         data: data,
       })
+
+      // Developers: Feel Free to Remove These Logs
       if (response.data === 'used name') {
         console.log('used name, try another');
       }
@@ -53,18 +62,16 @@ function SignUp(props) {
       if (response.data === 'used phone number') {
         console.log('used phone number, try another');
       }
+      //
 
       if (response.data === 'success') {
-
         // REDUX
         props.login({ username: data.username, color: data.color });
-
         // ROUTE
         props.navigation.navigate('Track Chat');
-
       }
     } catch (error) {
-      console.log('error trying to save to database', error);
+      console.log('Error trying to save to database:', error);
     }
   }
 
@@ -181,7 +188,6 @@ function SignUp(props) {
         defaultValue={0}
       />
 
-
       { !props.loggedIn ? 
       
       <TouchableOpacity style={styles.button}>
@@ -201,7 +207,6 @@ function SignUp(props) {
         </Text>
       </TouchableOpacity>
 
-    
       }
 
       <Text style={styles.loginPrompt}>Already Signed Up?</Text>
@@ -211,15 +216,14 @@ function SignUp(props) {
         onPress={() => props.navigation.navigate('Log In')}
       />
 
-
-
     </View>
   )
 }
 
-
 ////////////////////////////////////////////////////////////////////
 // Styling
+////////////////////////////////////////////////////////////////////
+
 let { height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
@@ -268,9 +272,10 @@ const styles = StyleSheet.create({
   },
 });
 
-
 ////////////////////////////////////////////////////////////////////
 // Connection to Redux store
+////////////////////////////////////////////////////////////////////
+
 const mapStateToProps = store => {
   return {
     loggedIn: store.logReducer.loggedIn,

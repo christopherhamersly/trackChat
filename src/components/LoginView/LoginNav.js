@@ -15,6 +15,8 @@ const Stack = createStackNavigator();
 
 ////////////////////////////////////////////////////////////////////
 // Root component has tabs for the Map suite
+////////////////////////////////////////////////////////////////////
+
 function Root() {
   return (
 
@@ -28,6 +30,8 @@ function Root() {
 
 ////////////////////////////////////////////////////////////////////
 // HideTabBar has the screen stack for the Login and Signup
+////////////////////////////////////////////////////////////////////
+
 function HideTabBar() {
   return (
     <NavigationContainer>
@@ -39,7 +43,6 @@ function HideTabBar() {
     </NavigationContainer>
   );
 }
-
 
 export default HideTabBar;
 

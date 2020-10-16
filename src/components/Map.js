@@ -1,43 +1,34 @@
-import React, { useCallback, useEffect, useState } from "react";
-import MapView, { Marker, AnimatedRegion } from "react-native-maps";
+import React, { useEffect, useState } from "react";
+import MapView, { Marker } from "react-native-maps";
 import {
-  Alert,
   Dimensions,
-  Image,
-  Platform,
   StyleSheet,
-  Switch,
-  TabBarIOS,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
-import socketIO from "socket.io-client";
+
 import { connect } from "react-redux";
 import { location } from "../store/login";
 
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createStackNavigator } from "@react-navigation/stack";
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-// import AddGroupTab from '../components/GroupAdd.js';
-
-// const Tab = createBottomTabNavigator();
+import socketIO from "socket.io-client";
+const socket = socketIO("https://trackchat.herokuapp.com");
 
 import Loading from "../components/Loading.js";
 
-const socket = socketIO("https://trackchat.herokuapp.com");
+////////////////////////////////////////////////////////////////////
+// Map component receives props: username, loggedIn, color, location
+// Renders a map view with pins representing logged in users and
+// continues updating the location of the pins every 3 seconds
+// based on users' socket-emitted latitude & longitude 
+////////////////////////////////////////////////////////////////////
 
 const Map = (props) => {
   const [locationPermissions, setLocationPermissions] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [locationResult, setLocationResult] = useState("");
   const [currentLocations, setCurrentLocations] = useState({});
   const [sosLocation, setSosLocation] = useState(null);
-
-  //key user: value: lat/lon
   const [everyonesPosition, setEveryonesPosition] = useState({});
 
   const grantLocationPermissions = async () => {
@@ -52,14 +43,12 @@ const Map = (props) => {
 
   const grabLocation = (latitude, longitude) => {
     props.location({ latitude, longitude });
-    // console.log(user, 'user')
     socket.emit("locationBroadcast", {
       user: props.loggedIn ? props.username : "user",
       latitude,
       longitude,
       color: props.color,
     });
-    // socket.emit('locationBroadcast', { user: 'fake', latitude: 47.61625, longitude: -122.3119 })
   };
 
   useEffect(() => {
@@ -69,8 +58,7 @@ const Map = (props) => {
   useEffect(() => {
     socket.emit("join", { username: props.username || "user" });
     socket.on("location", (location) => {
-      // console.log('location of a user:', location);
-      // this is where we set everyones position
+      // Sets users' initial positions
       addUsersToMap(location);
     });
     socket.on("sos", (alert) => {
@@ -80,15 +68,9 @@ const Map = (props) => {
         user: alert.username,
       });
     });
-    // socket.on('userLeaves', user => {
-    //   let everyoneElse = currentLocations;
-    //   delete everyoneElse[user];
-    //   setEveryonesPosition(everyoneElse);
-    // })
   }, []);
 
   const addUsersToMap = (location) => {
-    // console.log("in add users to map", location.user);
 
     setEveryonesPosition((oldObj) => ({
       ...oldObj,
@@ -102,20 +84,13 @@ const Map = (props) => {
 
   const repeatingLocations = () => {
     setInterval(async () => {
-      // console.log("in interval");
       let location = await Location.getCurrentPositionAsync({});
       grabLocation(location.coords.latitude, location.coords.longitude);
     }, 3000);
   };
 
-  useEffect(() => {
-    // console.log("every position in use effect", everyonesPosition);
-  }, [everyonesPosition]);
-
   const getStartingPosition = async () => {
     let location = await Location.getCurrentPositionAsync({});
-
-    // setLocationResult({ locationResult: JSON.stringify(location) });
 
     grabLocation(location.coords.latitude, location.coords.longitude);
 
@@ -125,6 +100,7 @@ const Map = (props) => {
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     });
+
     setIsLoading(false);
     repeatingLocations();
   };
@@ -169,27 +145,16 @@ const Map = (props) => {
             ))}
           </MapView>
         )}
-
-        {/* <NavigationContainer>
-          <Tab.Navigator>
-            <Tab.Screen name="Map" component={MapScreen} />
-            <Tab.Screen name="Chat" component={Chat} />
-            <Tab.Screen name="Create Group" component={AddGroupTab} />
-          </Tab.Navigator>
-        </NavigationContainer> */}
       </View>
     </>
   );
+
 };
 
-// STYLING
+////////////////////////////////////////////////////////////////////
+// Styling
+////////////////////////////////////////////////////////////////////
 
-const getRandomColor = () => {
-  let hexcode = "#" + Math.random().toString(16).slice(2, 8);
-  return hexcode;
-};
-
-let pinColor = getRandomColor();
 let { height, width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
@@ -209,29 +174,10 @@ const styles = StyleSheet.create({
   },
 });
 
-// function MapScreen() {
-//   return (
-//     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-//       <Text>CURRENTLY ON "MAP SCREEN"</Text>
-//       <Map />
-//     </View>
-//   );
-// }
-
-// export default Map;
-
 function MapScreen(props) {
   return (
     <>
-      {/* <MaterialCommunityIcons
-        name="bell-alert-outline"
-        size={50}
-        color="red"
-        style={styles.sos}
-        onPress={() => sosAlert()}
-      /> */}
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>CURRENTLY ON "MAP SCREEN"</Text>
         <Map
           username={props.username}
           location={props.location}
@@ -242,6 +188,10 @@ function MapScreen(props) {
     </>
   );
 }
+
+////////////////////////////////////////////////////////////////////
+// Connection to Redux store
+////////////////////////////////////////////////////////////////////
 
 const mapStateToProps = (store) => {
   return {

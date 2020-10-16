@@ -1,54 +1,44 @@
 import React, { useEffect, useState } from "react";
 import {
   Dimensions,
-  Form,
-  Image,
-  FlatList,
-  Platform,
   StyleSheet,
-  Switch,
-  TabBarIOS,
   Text,
   TouchableOpacity,
-  View,
   TextInput,
   ScrollView,
   Alert,
   KeyboardAvoidingView
 } from "react-native";
-import * as Permissions from "expo-permissions";
-import SignUp from "./LoginView/SignUp.js";
+
 import { useForm, Controller } from "react-hook-form";
-import socketIO from "socket.io-client";
-import { connect } from "react-redux";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const socket = socketIO("https://trackchat.herokuapp.com");
-// const socket = socketIO('http://localhost:3000')
+import { connect } from "react-redux";
 
-function sosAlert() {
-  Alert.alert("SEND SOS");
-}
+import socketIO from "socket.io-client";
+const socket = socketIO("https://trackchat.herokuapp.com");
+
+////////////////////////////////////////////////////////////////////
+// Chat component listens for chat events from the socket
+// receives props from redux store to connect usernames to display
+// Returns a rendered chat window and text input field
+// Returns an SOS button which alerts all users to the position 
+// of the individual requesting help
+////////////////////////////////////////////////////////////////////
 
 function Chat(props) {
   const [chats, setChats] = useState([]);
-  const [sos, setSos] = useState();
-  const [help, setHelp] = useState();
 
   const { control, handleSubmit, handleserrors } = useForm();
 
   const onSubmit = (chat) => {
-    // console.log('Username:', props.username)
-    console.log("Chat:", chat);
     socket.emit("chatBroadcast", {
       username: props.username,
       message: chat.chat,
     });
-    console.log("chat", chat);
   };
 
   const handleSOS = (sos) => {
-    console.log("SOS");
     socket.emit("sosBroadcast", {
       username: props.username,
       location: { latitude: props.latitude, longitude: props.longitude },
@@ -60,22 +50,14 @@ function Chat(props) {
     console.log("Errors:", errors);
   };
 
-  const addChatToWindow = (chat) => {
-    console.log("chat received", chat);
-    // setChats((chats) => [...chats, chat])
-  };
-
   useEffect(() => {
     socket.on("sos", (alert) => {
       (Alert.alert(alert.username, `Needs help! \n Located at: \n ${alert.location.latitude}, ${alert.location.longitude}`));
-      console.log(`${alert.username} needs help!`);
     });
   }, []);
 
   useEffect(() => {
     socket.on("chat", (chat) => {
-      // addChatToWindow(chat);
-      console.log("chats from use effect", chats);
       setChats((chats) => [...chats, chat]);
     });
   }, []);
@@ -83,7 +65,8 @@ function Chat(props) {
   return (
     <KeyboardAvoidingView
       style = {{ flex: 1, alignItems: "center", justifyContent: "center"}}
-      behavior = "padding" >
+      behavior = "padding"
+    >
       <ScrollView style={styles.chat}>
         {chats.map((chat, i) => (
           <Text style={styles.chatText} key={i}>
@@ -92,7 +75,7 @@ function Chat(props) {
           </Text>
         ))}
       </ScrollView>
-      {/* </FlatList> */}
+
       <Controller
         control={control}
         render={({ onChange, onBlur, value }) => (
@@ -122,13 +105,16 @@ function Chat(props) {
           color="red"
           style={styles.sos}
           onPress={handleSubmit(handleSOS, onError)}
-          // onPress={() => sosAlert()}
         />
       </TouchableOpacity>
 
     </KeyboardAvoidingView>
   );
 }
+
+////////////////////////////////////////////////////////////////////
+// Styling
+////////////////////////////////////////////////////////////////////
 
 let { height, width } = Dimensions.get("window");
 
@@ -202,6 +188,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+////////////////////////////////////////////////////////////////////
+// Connection to Redux store
+////////////////////////////////////////////////////////////////////
 
 const mapStateToProps = (store) => {
   return {
