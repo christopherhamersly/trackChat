@@ -1,33 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import MapView from 'react-native-maps';
-import { Dimensions, Image, Platform, StyleSheet, Switch, TabBarIOS, Text, TouchableOpacity, View } from 'react-native';
-import * as Contacts from 'expo-contacts';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from 'react'
 import { Provider } from 'react-redux';
 
-
 import MapScreen from './components/Map.js';
-import SignUp from './components/EntryPoint.js';
-import LogIn from './components/LoginView/LogIn2.js';
-
 import LoginNav from './components/LoginView/LoginNav.js';
 
-import Chat from './components/Chat.js'
-
-import FlatListDemo from './components/CreatGroup';
-
-
 import store from './store/index'
-
 import { connect } from "react-redux";
 
-
-const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+////////////////////////////////////////////////////////////////////
+// App component sets up connection between redux store
+// and all nested components.
+// Renders MainScreen
+////////////////////////////////////////////////////////////////////
 
 function App() {
   return (
@@ -35,19 +19,25 @@ function App() {
       <MainScreen />
     </Provider>
   );
-
 }
 
-function MainScreen(props) {
+////////////////////////////////////////////////////////////////////
+// MainScreen Renders Login Navigation if user is not logged in
+// Renders Map Component Suite if user is logged in
+////////////////////////////////////////////////////////////////////
 
+function MainScreen(props) {
   return (
     !props.loggedIn
       ? <LoginNav />
       : <MapScreen />
 
   )
-
 }
+
+////////////////////////////////////////////////////////////////////
+// Connection to Redux store
+////////////////////////////////////////////////////////////////////
 
 const mapStateToProps = store => {
   return {

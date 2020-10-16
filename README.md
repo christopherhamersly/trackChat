@@ -37,24 +37,38 @@ This project utilizes Trello for project management. You can visit this board by
 ## Software Requirements
 Please visit this link to view the [Software Requirements](./requirements.md)
 
+## Web-based
+
+To Access The Application via Expo Snack:
+[Click Here](https://snack.expo.io/@christopherhamersly/track-chat-presentation) and scan the QR code that is generated
+
 ## Installation
-1. Clone this repository to your local machine: [Repo Link](https://github.com/trackChat/trackChat)
-1. Run the following command in your terminal to install all of the dependencies. 
+
+1. Clone this repository to your local machine:
 ```
-npm i
+git clone https://github.com/trackChat/trackChat
 ```
+
+2. Navigate to the project directory by using 
+```
+cd trackChat
+```
+
 3. Next create an expo app by running 
 ```
 expo init trackChat
 ```
-4. Navigate to the project directory by using 
+
+4. Run the following command in your terminal to install all of the dependencies. 
 ```
-cd trackChat
+npm i
 ```
+
 5. Run the following command to start the app on your local machine
 ```
 expo start
 ```
+
 6. Download the [expo client](https://expo.io/tools)
 
 7. Scan the QR code with your camera, and run the app from your phone. 
@@ -67,6 +81,7 @@ expo start
 ## Data Models
 ![UML](./assets/uml.png)
 ![ERD](./assets/erd.png)
+
 ## Data Flow
 * Upon visiting the app for the first time, a new user will create a user instance, that will be populated in the database. 
 * A returning user will use the login option, which sends data to the database to do a check for correct user information.
@@ -91,6 +106,7 @@ pendingRequest: ' ',
 email: ' ',
 role: ' ',
 ```
+
 ## Contributing
 * Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
@@ -100,17 +116,21 @@ role: ' ',
 ![Wireframe](./assets/wireframe.png)
 
 ## Approach to Testing
+To run test suites, run
+```
+npm test
+```
 
 ## License
 * [MIT](https://choosealicense.com/licenses/mit/)
 
 ## Resources
 1. [React Native Documentation](https://reactnative.dev/)
-1. [Expo Documentation](https://docs.expo.io/get-started/create-a-new-app/)
-1. [React Native Cheat Sheet](https://github.com/vhpoet/react-native-styling-cheat-sheet#text)
-1. [React Native Font Resource](https://github.com/react-native-training/react-native-fonts)
+2. [Expo Documentation](https://docs.expo.io/get-started/create-a-new-app/)
+3. [React Native Cheat Sheet](https://github.com/vhpoet/react-native-styling-cheat-sheet#text)
+4. [React Native Font Resource](https://github.com/react-native-training/react-native-fonts)
 
-## Contributors Github Repositories
+## Contributors Github Accounts
 * [Christopher Hamersly](https://github.com/christopherhamersly)
 * [Cas Ibrahim](https://github.com/mamacas)
 * [Reagan Roberts](https://github.com/Rearo43)
