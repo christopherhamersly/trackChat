@@ -181,6 +181,9 @@ function SignUp(props) {
         defaultValue={0}
       />
 
+
+      { !props.loggedIn ? 
+      
       <TouchableOpacity style={styles.button}>
         <Text
           style={styles.buttonText}
@@ -188,8 +191,18 @@ function SignUp(props) {
         >
           Sign Up
         </Text>
+      </TouchableOpacity> :
+
+      <TouchableOpacity style={styles.button}>
+        <Text
+          style={styles.buttonText}
+          onPress={() => props.logout()}>
+          Log Out
+        </Text>
       </TouchableOpacity>
 
+    
+      }
 
       <Text style={styles.loginPrompt}>Already Signed Up?</Text>
 
@@ -198,14 +211,7 @@ function SignUp(props) {
         onPress={() => props.navigation.navigate('Log In')}
       />
 
-      {/* Still need to move this button */}
-      <TouchableOpacity style={styles.button}>
-        <Text
-          style={styles.buttonText}
-          onPress={() => props.logout()}>
-          Log Out {props.username}
-        </Text>
-      </TouchableOpacity>
+
 
     </View>
   )

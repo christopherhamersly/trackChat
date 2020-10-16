@@ -65,12 +65,12 @@ function Chat(props) {
     // setChats((chats) => [...chats, chat])
   };
 
-  // useEffect(() => {
-  //   socket.on("sos", (alert) => {
-  //     (Alert.alert(alert.username, `needs help! Located at:${alert.location.latitude} ${alert.location.longitude}`));
-  //     console.log(`${alert.username} needs help!`);
-  //   });
-  // }, []);
+  useEffect(() => {
+    socket.on("sos", (alert) => {
+      (Alert.alert(alert.username, `Needs help! \n Located at: \n ${alert.location.latitude}, ${alert.location.longitude}`));
+      console.log(`${alert.username} needs help!`);
+    });
+  }, []);
 
   useEffect(() => {
     socket.on("chat", (chat) => {
@@ -82,8 +82,8 @@ function Chat(props) {
 
   return (
     <KeyboardAvoidingView
-  style = {{ flex: 1 }}
-  behavior = "padding" >
+      style = {{ flex: 1, alignItems: "center", justifyContent: "center"}}
+      behavior = "padding" >
       <ScrollView style={styles.chat}>
         {chats.map((chat, i) => (
           <Text style={styles.chatText} key={i}>
@@ -114,7 +114,8 @@ function Chat(props) {
           CHAT
         </Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity>
+
+      <TouchableOpacity>
         <MaterialCommunityIcons
           name="bell-alert-outline"
           size={50}
@@ -123,11 +124,13 @@ function Chat(props) {
           onPress={handleSubmit(handleSOS, onError)}
           // onPress={() => sosAlert()}
         />
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
     </KeyboardAvoidingView>
   );
 }
+
+let { height, width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   footer: {
@@ -139,12 +142,13 @@ const styles = StyleSheet.create({
   },
   chat:{
     marginTop: 130,
-    marginBottom: 60,
+    marginBottom: 20,
     backgroundColor: "#d8e4f0",
-    paddingRight: 170,
+    paddingRight: 20,
     paddingLeft: 20,
-    borderColor: "#6d6f70"
-    
+    borderColor: "#6d6f70",
+    width: width - 50,
+    height: height -200,
 
   },
   chatText:{
@@ -156,7 +160,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 50,
-    width: 200,
+    width: width - 50,
     padding: 5,
     backgroundColor: "#fff",
     borderWidth: 1,
