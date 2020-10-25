@@ -64,14 +64,19 @@ expo init trackChat
 npm i
 ```
 
-5. Run the following command to start the app on your local machine
+5. Go into the node-modules folder down to 'expo/AppEntry.js', change where App is being imported from.
+```
+import App from '../../src/App';
+```
+
+6. Run the following command to start the app on your local machine
 ```
 expo start
 ```
 
-6. Download the [expo client](https://expo.io/tools)
+7. Download the [expo client](https://expo.io/tools)
 
-7. Scan the QR code with your camera, and run the app from your phone. 
+8. Scan the QR code with your camera, and run the app from your phone. 
 
 
 ## Deployment
